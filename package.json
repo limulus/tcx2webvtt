@@ -1,0 +1,71 @@
+{
+  "name": "tcx2webvtt",
+  "version": "1.0.0",
+  "description": "Convert a TCX workout file to WebVTT with JSON metadata",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "type": "module",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "concurrently -c auto 'npm:build:*'",
+    "build:cjs": "tsc --incremental false --module commonjs --outDir dist/cjs",
+    "build:dts": "tsc --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
+    "build:esm": "tsc --incremental false --outDir dist/esm",
+    "postbuild:cjs": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
+    "clean": "del-cli *.tsbuildinfo coverage dist",
+    "lint": "eslint *.ts src",
+    "prepack": "npm run build",
+    "prepare": "is-ci || husky",
+    "test": "vitest run --coverage",
+    "tscc": "tsc --noEmit",
+    "verify": "concurrently -c cyan,magenta,blue npm:lint npm:test npm:tscc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limulus/tcx2webvtt.git"
+  },
+  "author": {
+    "name": "Eric McCarthy",
+    "email": "eric@limulus.net",
+    "url": "https://limulus.net/"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/limulus/tcx2webvtt/issues"
+  },
+  "homepage": "https://github.com/limulus/tcx2webvtt#readme",
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@limulus/eslint-config": "^5.1.0",
+    "@types/node": "^22.13.10",
+    "@vitest/coverage-v8": "^3.0.9",
+    "concurrently": "^9.1.2",
+    "del-cli": "^6.0.0",
+    "eslint": "^8.52.0",
+    "husky": "^9.1.7",
+    "is-ci": "^4.1.0",
+    "mkdirp": "^3.0.1",
+    "semantic-release": "^24.2.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}
