@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<TrainingCenterDatabase>
+  <Activities>
+    <Activity>
+      <Lap />
+    </Activity>
+  </Activities>
+</TrainingCenterDatabase>

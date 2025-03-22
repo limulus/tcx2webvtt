@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<TrainingCenterDatabase>
+  <Activities>
+    <Activity>
+      <Lap>
+        <Track>
+          <Trackpoint>
+            <Time>2025-01-01T00:00:00Z</Time>
+            <DistanceMeters>invalid</DistanceMeters>
+            <Cadence>invalid</Cadence>
+            <HeartRateBpm>
+              <Value>invalid</Value>
+            </HeartRateBpm>
+            <Extensions>
+              <TPX>
+                <Watts>invalid</Watts>
+              </TPX>
+            </Extensions>
+          </Trackpoint>
+        </Track>
+      </Lap>
+    </Activity>
+  </Activities>
+</TrainingCenterDatabase>
