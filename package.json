@@ -26,6 +26,7 @@
     "postbuild:cjs": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "clean": "del-cli *.tsbuildinfo coverage dist",
     "lint": "eslint *.ts src",
+    "lint:fix": "npm run lint -- --fix",
     "prepack": "npm run build",
     "prepare": "is-ci || husky",
     "test": "vitest run --coverage",

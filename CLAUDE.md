@@ -5,6 +5,7 @@
 - Build: `npm run build`
 - Clean: `npm run clean`
 - Lint: `npm run lint`
+- Fix linting: `npm run lint:fix`
 - Type check: `npm run tscc`
 - Test (all): `npm run test`
 - Test (single file): `npm test -- src/path/to/file.spec.ts`
