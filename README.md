@@ -2,27 +2,19 @@
 
 Convert a TCX workout file to WebVTT with JSON metadata
 
-## Installation
-
-```sh
-npm install tcx2webvtt
-```
-
 ## Usage
 
-```javascript
-import Class from 'tcx2webvtt'
+Install globally, or run without installing using `npx`.
+
+```sh
+npm install -g tcx2webvtt
 ```
 
-## API
+Convert a [TCX] workout file to [WebVTT].
 
-### Class
-
-#### constructor
-
-```javascript
-const obj = new Class()
+```sh
+tcx2webvtt my-workout.tcx > my-track.vtt
 ```
 
-#### obj.method()
-
+[tcx]: https://en.wikipedia.org/wiki/Training_Center_XML
+[webvtt]: https://en.wikipedia.org/wiki/WebVTT
