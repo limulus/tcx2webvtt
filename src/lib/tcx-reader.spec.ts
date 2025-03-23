@@ -3,7 +3,8 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, it, expect } from 'vitest'
 
-import { TCXReader, Sample, SampleKind } from './tcx-reader.js'
+import { Sample, SampleKind } from './sample.js'
+import { TCXReader } from './tcx-reader.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const fixturesDir = join(__dirname, '..', '..', 'fixtures')
@@ -107,7 +108,7 @@ describe('TCXReader', () => {
           acc[timeKey].push(sample)
           return acc
         },
-        {} as Record<string, Sample[]>
+        {} as Record<string, Sample<SampleKind>[]>
       )
 
       // First timestamp should have heart rate and distance samples
@@ -120,6 +121,48 @@ describe('TCXReader', () => {
       const bikeSamples = samplesByTime['2025-01-01T10:00:00.000Z']
       expect(bikeSamples).toBeDefined()
       expect(bikeSamples.find((s) => s.kind === SampleKind.Power)?.value).toBe(250)
+    })
+
+    it('should handle TCX content with location data', async () => {
+      const tcxContent = await fs.readFile(
+        join(fixturesDir, 'healthkit-cycling.tcx'),
+        'utf8'
+      )
+      const reader = new TCXReader(tcxContent)
+      const samples = reader.getSamples()
+
+      expect(samples).toBeInstanceOf(Array)
+      expect(samples.length).toBeGreaterThan(0)
+
+      // Find samples with location data
+      const locationSamples = samples.filter((s) => s.kind === SampleKind.Location)
+      expect(locationSamples.length).toBeGreaterThan(0)
+
+      // Check first location sample
+      const firstLocationSample = locationSamples[0] as Sample<SampleKind.Location>
+      expect(firstLocationSample.value).toEqual(
+        expect.objectContaining({
+          latitude: expect.any(Number),
+          longitude: expect.any(Number),
+          altitude: expect.any(Number),
+        })
+      )
+
+      // Check specific location values from the first trackpoint with position
+      expect(firstLocationSample.value.latitude).toBeCloseTo(32.36415566566089)
+      expect(firstLocationSample.value.longitude).toBeCloseTo(-111.01644143335649)
+      expect(firstLocationSample.value.altitude).toBeCloseTo(714.6836803928018)
+
+      // Verify that consecutive location samples have different coordinates
+      if (locationSamples.length > 1) {
+        const secondLocationSample = locationSamples[1] as Sample<SampleKind.Location>
+        expect(secondLocationSample.value.latitude).not.toBe(
+          firstLocationSample.value.latitude
+        )
+        expect(secondLocationSample.value.longitude).not.toBe(
+          firstLocationSample.value.longitude
+        )
+      }
     })
   })
 })
