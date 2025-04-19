@@ -1,15 +1,15 @@
 import { describe, it, expect } from 'vitest'
 
-import { Sample, SampleKind, Coordinates } from './sample.js'
+import { Sample, SampleMetric, Coordinates } from './sample.js'
 
 describe('Sample', () => {
   describe('constructor', () => {
     it('should create a sample for numeric values', () => {
       const time = new Date()
-      const sample = new Sample(time, SampleKind.HeartRate, 150)
+      const sample = new Sample(time, SampleMetric.HeartRate, 150)
 
       expect(sample.time).toBe(time)
-      expect(sample.kind).toBe(SampleKind.HeartRate)
+      expect(sample.metric).toBe(SampleMetric.HeartRate)
       expect(sample.value).toBe(150)
     })
 
@@ -20,10 +20,10 @@ describe('Sample', () => {
         longitude: -122.3321,
         altitude: 100,
       }
-      const sample = new Sample(time, SampleKind.Location, coordinates)
+      const sample = new Sample(time, SampleMetric.Location, coordinates)
 
       expect(sample.time).toBe(time)
-      expect(sample.kind).toBe(SampleKind.Location)
+      expect(sample.metric).toBe(SampleMetric.Location)
       expect(sample.value).toBe(coordinates)
       expect(sample.value.latitude).toBe(47.6062)
       expect(sample.value.longitude).toBe(-122.3321)
@@ -36,10 +36,10 @@ describe('Sample', () => {
         latitude: 47.6062,
         longitude: -122.3321,
       }
-      const sample = new Sample(time, SampleKind.Location, coordinates)
+      const sample = new Sample(time, SampleMetric.Location, coordinates)
 
       expect(sample.time).toBe(time)
-      expect(sample.kind).toBe(SampleKind.Location)
+      expect(sample.metric).toBe(SampleMetric.Location)
       expect(sample.value).toBe(coordinates)
       expect(sample.value.latitude).toBe(47.6062)
       expect(sample.value.longitude).toBe(-122.3321)
@@ -49,11 +49,11 @@ describe('Sample', () => {
 
   describe('SampleKind', () => {
     it('should have the correct enum values', () => {
-      expect(SampleKind.HeartRate).toBe('heartRate')
-      expect(SampleKind.Distance).toBe('distance')
-      expect(SampleKind.Cadence).toBe('cadence')
-      expect(SampleKind.Power).toBe('power')
-      expect(SampleKind.Location).toBe('location')
+      expect(SampleMetric.HeartRate).toBe('heartRate')
+      expect(SampleMetric.Distance).toBe('distance')
+      expect(SampleMetric.Cadence).toBe('cadence')
+      expect(SampleMetric.Power).toBe('power')
+      expect(SampleMetric.Location).toBe('location')
     })
   })
 })
