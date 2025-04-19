@@ -7,7 +7,7 @@ Pro XML export) to omit parts of the output and ensure synchronization with an e
 
 ## Todos
 
-- [] Set up vitest browser testing that will enable testing of WebVTT output
+- [x] Set up vitest browser testing that will enable testing of WebVTT output
 - [] Class to generate WebVTT file from array of `Sample`s
 - [] Parse timecode data from a Final Cut Pro XML export
 - [] Create a class that uses the timecode info from the FCP XML and creates a list of
