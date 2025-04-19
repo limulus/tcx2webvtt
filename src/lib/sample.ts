@@ -1,4 +1,4 @@
-export enum SampleKind {
+export enum SampleMetric {
   HeartRate = 'heartRate',
   Distance = 'distance',
   Cadence = 'cadence',
@@ -12,14 +12,14 @@ export interface Coordinates {
   altitude?: number
 }
 
-export type SampleValue<T extends SampleKind> = T extends SampleKind.Location
+export type SampleValue<T extends SampleMetric> = T extends SampleMetric.Location
   ? Coordinates
   : number
 
-export class Sample<T extends SampleKind = SampleKind> {
+export class Sample<T extends SampleMetric = SampleMetric> {
   constructor(
     public readonly time: Date,
-    public readonly kind: T,
+    public readonly metric: T,
     public readonly value: SampleValue<T>
   ) {}
 }

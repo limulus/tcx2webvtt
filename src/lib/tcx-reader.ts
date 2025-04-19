@@ -1,6 +1,6 @@
 import { XMLParser } from 'fast-xml-parser'
 
-import { Sample, SampleKind, Coordinates } from './sample.js'
+import { Sample, SampleMetric, Coordinates } from './sample.js'
 
 export class TCXReader {
   private readonly parser: XMLParser
@@ -14,13 +14,13 @@ export class TCXReader {
     this.xmlData = this.parser.parse(tcxContent)
   }
 
-  public getSamples(): Sample<SampleKind>[] {
+  public getSamples(): Sample<SampleMetric>[] {
     const activities = this.xmlData?.TrainingCenterDatabase?.Activities?.Activity
     if (!activities) {
       return []
     }
 
-    const allSamples: Sample<SampleKind>[] = []
+    const allSamples: Sample<SampleMetric>[] = []
     for (const activity of activities) {
       if (!activity.Lap) continue
 
@@ -53,11 +53,11 @@ export class TCXReader {
 
               // Create a location sample with coordinates as the value
               allSamples.push(
-                new Sample<SampleKind.Location>(
+                new Sample<SampleMetric.Location>(
                   time,
-                  SampleKind.Location,
+                  SampleMetric.Location,
                   coordinates
-                ) as Sample<SampleKind>
+                ) as Sample<SampleMetric>
               )
             }
           }
@@ -67,7 +67,11 @@ export class TCXReader {
             const distanceValue = parseFloat(tp.DistanceMeters)
             if (!isNaN(distanceValue)) {
               allSamples.push(
-                new Sample<SampleKind.Distance>(time, SampleKind.Distance, distanceValue)
+                new Sample<SampleMetric.Distance>(
+                  time,
+                  SampleMetric.Distance,
+                  distanceValue
+                )
               )
             }
           }
@@ -76,7 +80,7 @@ export class TCXReader {
             const cadenceValue = parseInt(tp.Cadence, 10)
             if (!isNaN(cadenceValue)) {
               allSamples.push(
-                new Sample<SampleKind.Cadence>(time, SampleKind.Cadence, cadenceValue)
+                new Sample<SampleMetric.Cadence>(time, SampleMetric.Cadence, cadenceValue)
               )
             }
           }
@@ -85,7 +89,7 @@ export class TCXReader {
             const hrValue = parseInt(tp.HeartRateBpm.Value, 10)
             if (!isNaN(hrValue)) {
               allSamples.push(
-                new Sample<SampleKind.HeartRate>(time, SampleKind.HeartRate, hrValue)
+                new Sample<SampleMetric.HeartRate>(time, SampleMetric.HeartRate, hrValue)
               )
             }
           }
@@ -96,7 +100,9 @@ export class TCXReader {
             if (wattsValue !== undefined && wattsValue !== null && wattsValue !== '') {
               const watts = parseInt(String(wattsValue), 10)
               if (!isNaN(watts)) {
-                allSamples.push(new Sample<SampleKind.Power>(time, SampleKind.Power, watts))
+                allSamples.push(
+                  new Sample<SampleMetric.Power>(time, SampleMetric.Power, watts)
+                )
               }
             }
           }

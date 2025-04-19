@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, it, expect } from 'vitest'
 
-import { Sample, SampleKind } from './sample.js'
+import { Sample, SampleMetric } from './sample.js'
 import { TCXReader } from './tcx-reader.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -29,25 +29,25 @@ describe('TCXReader', () => {
       samples.forEach((sample) => {
         expect(sample).toBeInstanceOf(Sample)
         expect(sample.time).toBeInstanceOf(Date)
-        expect(Object.values(SampleKind)).toContain(sample.kind)
+        expect(Object.values(SampleMetric)).toContain(sample.metric)
         expect(typeof sample.value).toBe('number')
       })
 
       // Check sample data types for each kind
-      const heartRateSamples = samples.filter((s) => s.kind === SampleKind.HeartRate)
+      const heartRateSamples = samples.filter((s) => s.metric === SampleMetric.HeartRate)
       expect(heartRateSamples.length).toBeGreaterThan(0)
       expect(heartRateSamples[0].value).toBe(88) // From first trackpoint
 
-      const distanceSamples = samples.filter((s) => s.kind === SampleKind.Distance)
+      const distanceSamples = samples.filter((s) => s.metric === SampleMetric.Distance)
       expect(distanceSamples.length).toBeGreaterThan(0)
       expect(distanceSamples[0].value).toBe(2.7) // From first trackpoint
 
-      const cadenceSamples = samples.filter((s) => s.kind === SampleKind.Cadence)
+      const cadenceSamples = samples.filter((s) => s.metric === SampleMetric.Cadence)
       expect(cadenceSamples.length).toBeGreaterThan(0)
       expect(cadenceSamples[0].value).toBe(25) // From second trackpoint
 
       // We know the second trackpoint has a power value of 121
-      const powerSamples = samples.filter((s) => s.kind === SampleKind.Power)
+      const powerSamples = samples.filter((s) => s.metric === SampleMetric.Power)
       expect(powerSamples.length).toBeGreaterThan(0)
     })
 
@@ -108,19 +108,23 @@ describe('TCXReader', () => {
           acc[timeKey].push(sample)
           return acc
         },
-        {} as Record<string, Sample<SampleKind>[]>
+        {} as Record<string, Sample<SampleMetric>[]>
       )
 
       // First timestamp should have heart rate and distance samples
       const firstTimeSamples = samplesByTime['2025-01-01T09:00:00.000Z']
       expect(firstTimeSamples).toBeDefined()
-      expect(firstTimeSamples.find((s) => s.kind === SampleKind.HeartRate)?.value).toBe(140)
-      expect(firstTimeSamples.find((s) => s.kind === SampleKind.Distance)?.value).toBe(100)
+      expect(firstTimeSamples.find((s) => s.metric === SampleMetric.HeartRate)?.value).toBe(
+        140
+      )
+      expect(firstTimeSamples.find((s) => s.metric === SampleMetric.Distance)?.value).toBe(
+        100
+      )
 
       // Bike samples should have power readings
       const bikeSamples = samplesByTime['2025-01-01T10:00:00.000Z']
       expect(bikeSamples).toBeDefined()
-      expect(bikeSamples.find((s) => s.kind === SampleKind.Power)?.value).toBe(250)
+      expect(bikeSamples.find((s) => s.metric === SampleMetric.Power)?.value).toBe(250)
     })
 
     it('should handle TCX content with location data', async () => {
@@ -135,11 +139,11 @@ describe('TCXReader', () => {
       expect(samples.length).toBeGreaterThan(0)
 
       // Find samples with location data
-      const locationSamples = samples.filter((s) => s.kind === SampleKind.Location)
+      const locationSamples = samples.filter((s) => s.metric === SampleMetric.Location)
       expect(locationSamples.length).toBeGreaterThan(0)
 
       // Check first location sample
-      const firstLocationSample = locationSamples[0] as Sample<SampleKind.Location>
+      const firstLocationSample = locationSamples[0] as Sample<SampleMetric.Location>
       expect(firstLocationSample.value).toEqual(
         expect.objectContaining({
           latitude: expect.any(Number),
@@ -155,7 +159,7 @@ describe('TCXReader', () => {
 
       // Verify that consecutive location samples have different coordinates
       if (locationSamples.length > 1) {
-        const secondLocationSample = locationSamples[1] as Sample<SampleKind.Location>
+        const secondLocationSample = locationSamples[1] as Sample<SampleMetric.Location>
         expect(secondLocationSample.value.latitude).not.toBe(
           firstLocationSample.value.latitude
         )
