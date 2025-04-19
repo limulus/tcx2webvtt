@@ -1,4 +1,15 @@
-# Create Project Helper Guide
+# tcx2webvtt Helper Guide
+
+See `PLAN.md` to learn what the purpose and plan is for this project.
+
+## Software Development Methodology
+
+- Use Test Driven Development:
+  - Write tests first
+  - Ensure new tests fail
+  - Write minimal production code to make tests pass
+  - Consider refactoring production code
+  - Ensure tests continue to pass
 
 ## Commands
 
