@@ -71,7 +71,7 @@ describe('tcx2webvtt CLI', () => {
   })
 
   it('should convert TCX to WebVTT and output to stdout', async () => {
-    const fixtureFile = join(__dirname, '../../fixtures/concept2.tcx')
+    const fixtureFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
     mockProcess.argv.push(fixtureFile)
 
     await main(mockProcess)
@@ -84,7 +84,7 @@ describe('tcx2webvtt CLI', () => {
   })
 
   it('should handle invalid TCX files', async () => {
-    const invalidXmlFile = join(__dirname, '../../fixtures/invalid.tcx')
+    const invalidXmlFile = join(__dirname, '../../fixtures/tcx/invalid.tcx')
 
     mockProcess.argv.push(invalidXmlFile)
 
@@ -96,7 +96,7 @@ describe('tcx2webvtt CLI', () => {
 
   it('should handle TCX files with no trackpoints', async () => {
     // Use the fixture with no activities
-    const fixtureFile = join(__dirname, '../../fixtures/no-activities.tcx')
+    const fixtureFile = join(__dirname, '../../fixtures/tcx/no-activities.tcx')
 
     mockProcess.argv.push(fixtureFile)
 

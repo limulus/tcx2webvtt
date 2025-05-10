@@ -7,7 +7,7 @@ import { Sample, SampleMetric } from './sample.js'
 import { TCXReader } from './tcx-reader.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const fixturesDir = join(__dirname, '..', '..', 'fixtures')
+const fixturesDir = join(__dirname, '..', '..', 'fixtures', 'tcx')
 
 describe('TCXReader', () => {
   it('should be instantiable with TCX content', async () => {
