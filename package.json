@@ -16,6 +16,9 @@
     "dist",
     "src"
   ],
+  "bin": {
+    "tcx2webvtt": "dist/bin/tcx2webvtt.js"
+  },
   "type": "module",
   "scripts": {
     "prebuild": "npm run clean",
