@@ -1,7 +1,5 @@
 # tcx2webvtt Helper Guide
 
-See `PLAN.md` to learn what the purpose and plan is for this project.
-
 ## Software Development Methodology
 
 - Use Test Driven Development:
@@ -41,3 +39,7 @@ See `PLAN.md` to learn what the purpose and plan is for this project.
   - `src/lib/` - Core functionality
   - `src/bin/` - CLI entry points
   - `src/mocks/` - Test mocks
+
+## Development Plan
+
+See @PLAN.md
