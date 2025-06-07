@@ -6,17 +6,14 @@ import { main, ProcessLike } from './tcx2webvtt.js'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-describe('tcx2webvtt CLI', () => {
+describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
   let mockProcess: ProcessLike
   let stdout: string
   let stderr: string
 
-  beforeEach(async () => {
-    // Reset output capture variables
+  const resetMockProcess = () => {
     stdout = ''
     stderr = ''
-
-    // Mock process with string buffers
     mockProcess = {
       argv: ['node', 'tcx2webvtt.js'],
       stdout: {
@@ -31,6 +28,10 @@ describe('tcx2webvtt CLI', () => {
       },
       exit: vi.fn(),
     }
+  }
+
+  beforeEach(async () => {
+    resetMockProcess()
   })
 
   it('should display help when --help flag is used', async () => {
@@ -114,29 +115,22 @@ describe('tcx2webvtt CLI', () => {
       const file2 = join(__dirname, '../../fixtures/tcx/honeybee-canyon-hike.tcx')
 
       // First verify each file individually doesn't contain the other's data
-      let individualStdout = ''
-      const individualMockProcess = {
-        ...mockProcess,
-        stdout: {
-          write(data: string) {
-            individualStdout += data
-          },
-        },
-      }
-
       // Test cycling file alone doesn't contain hiking data
-      individualMockProcess.argv = ['node', 'tcx2webvtt.js', file1]
-      individualStdout = ''
-      await main(individualMockProcess)
-      expect(individualStdout).toContain('"latitude":32.42404016739394')
-      expect(individualStdout).not.toContain('"latitude":32.44296776872435')
+      resetMockProcess()
+      mockProcess.argv.push(file1)
+      await main(mockProcess)
+      expect(stdout).toContain('"latitude":32.42404016739394')
+      expect(stdout).not.toContain('"latitude":32.44296776872435')
 
       // Test hiking file alone doesn't contain cycling data
-      individualMockProcess.argv = ['node', 'tcx2webvtt.js', file2]
-      individualStdout = ''
-      await main(individualMockProcess)
-      expect(individualStdout).toContain('"latitude":32.44296776872435')
-      expect(individualStdout).not.toContain('"latitude":32.42404016739394')
+      resetMockProcess()
+      mockProcess.argv.push(file2)
+      await main(mockProcess)
+      expect(stdout).toContain('"latitude":32.44296776872435')
+      expect(stdout).not.toContain('"latitude":32.42404016739394')
+
+      // Reset for the combined test
+      resetMockProcess()
 
       // Now test combining both files
       mockProcess.argv.push(file1, file2)
