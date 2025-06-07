@@ -42,6 +42,7 @@ describe('tcx2webvtt CLI', () => {
     expect(stdout).toContain('Options:')
     expect(stdout).toContain('--help')
     expect(stdout).toContain('--version')
+    expect(stdout).toContain('<input-file>...')
     expect(mockProcess.exit).toHaveBeenCalledWith(0)
   })
 
@@ -105,5 +106,79 @@ describe('tcx2webvtt CLI', () => {
     // Should still output a valid WebVTT header even with no samples
     expect(stdout).toBe('WEBVTT')
     expect(mockProcess.exit).not.toHaveBeenCalled()
+  })
+
+  describe('multiple TCX files', () => {
+    it('should process multiple TCX files and combine their samples', async () => {
+      const file1 = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      const file2 = join(__dirname, '../../fixtures/tcx/honeybee-canyon-hike.tcx')
+
+      // First verify each file individually doesn't contain the other's data
+      let individualStdout = ''
+      const individualMockProcess = {
+        ...mockProcess,
+        stdout: {
+          write(data: string) {
+            individualStdout += data
+          },
+        },
+      }
+
+      // Test cycling file alone doesn't contain hiking data
+      individualMockProcess.argv = ['node', 'tcx2webvtt.js', file1]
+      individualStdout = ''
+      await main(individualMockProcess)
+      expect(individualStdout).toContain('"latitude":32.42404016739394')
+      expect(individualStdout).not.toContain('"latitude":32.44296776872435')
+
+      // Test hiking file alone doesn't contain cycling data
+      individualMockProcess.argv = ['node', 'tcx2webvtt.js', file2]
+      individualStdout = ''
+      await main(individualMockProcess)
+      expect(individualStdout).toContain('"latitude":32.44296776872435')
+      expect(individualStdout).not.toContain('"latitude":32.42404016739394')
+
+      // Now test combining both files
+      mockProcess.argv.push(file1, file2)
+
+      await main(mockProcess)
+
+      // Should output WebVTT format
+      expect(stdout).toContain('WEBVTT')
+      expect(stdout).toContain('-->')
+      expect(stdout).toContain('"metric"')
+
+      // Should contain samples from both files
+      // Cycling file has this latitude from the start
+      expect(stdout).toContain('"latitude":32.42404016739394')
+      // Hiking file has this latitude from the middle
+      expect(stdout).toContain('"latitude":32.44296776872435')
+
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should error when processing mix of valid and invalid files', async () => {
+      const validFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      const invalidFile = join(__dirname, '../../fixtures/tcx/invalid.tcx')
+
+      mockProcess.argv.push(validFile, invalidFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('Error:')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should error when processing mix of existing and non-existing files', async () => {
+      const validFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      const nonExistentFile = 'nonexistent.tcx'
+
+      mockProcess.argv.push(validFile, nonExistentFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('Input file does not exist')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
   })
 })

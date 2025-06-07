@@ -6,6 +6,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
 
+import { SampleIndex } from '../lib/sample-index.js'
 import { TCXReader } from '../lib/tcx-reader.js'
 import { WebVTTGenerator } from '../lib/webvtt-generator.js'
 
@@ -14,7 +15,7 @@ const __dirname = dirname(__filename)
 
 function displayHelp(stdout: { write: (data: string) => void }) {
   stdout.write(`
-Usage: tcx2webvtt [options] <input-file>
+Usage: tcx2webvtt [options] <input-file>...
 
 Convert TCX workout files to WebVTT format with embedded JSON metadata.
 
@@ -24,6 +25,7 @@ Options:
 
 Examples:
   tcx2webvtt workout.tcx > workout.vtt
+  tcx2webvtt workout1.tcx workout2.tcx > combined.vtt
   `)
 }
 
@@ -64,40 +66,43 @@ export async function main(proc: ProcessLike) {
       proc.exit(0)
     }
 
-    // Check if input file is provided
+    // Check if input files are provided
     if (positionals.length === 0) {
       proc.stderr.write('Error: Input file is required\n')
       displayHelp(proc.stdout)
       proc.exit(1)
     }
 
-    const inputFile = positionals[0]
+    const inputFiles = positionals
 
-    // Check if input file exists
-    if (!existsSync(inputFile)) {
-      proc.stderr.write(`Error: Input file does not exist: ${inputFile}\n`)
-      proc.exit(1)
+    // Check if all input files exist
+    for (const inputFile of inputFiles) {
+      if (!existsSync(inputFile)) {
+        proc.stderr.write(`Error: Input file does not exist: ${inputFile}\n`)
+        proc.exit(1)
+      }
     }
 
-    // Read TCX file
-    const tcxContent = await readFile(inputFile, 'utf-8')
+    // Create SampleIndex to combine samples from all files
+    const sampleIndex = new SampleIndex()
 
-    try {
-      // Parse TCX
+    // Process each TCX file
+    for (const inputFile of inputFiles) {
+      const tcxContent = await readFile(inputFile, 'utf-8')
       const tcxReader = new TCXReader(tcxContent)
       const samples = tcxReader.getSamples()
-
-      // Generate WebVTT
-      const webvttGenerator = new WebVTTGenerator()
-      const webvttOutput = webvttGenerator.generate(samples)
-
-      // Output to stdout
-      proc.stdout.write(webvttOutput)
-    } catch (error) {
-      // Handle any processing errors
-      proc.stderr.write(`Error processing file: ${error}\n`)
-      proc.exit(1)
+      sampleIndex.addSamples(samples)
     }
+
+    // Get all combined samples
+    const allSamples = sampleIndex.getAllSamples()
+
+    // Generate WebVTT
+    const webvttGenerator = new WebVTTGenerator()
+    const webvttOutput = webvttGenerator.generate(allSamples)
+
+    // Output to stdout
+    proc.stdout.write(webvttOutput)
   } catch (error) {
     proc.stderr.write(`Error: ${error}\n`)
     proc.exit(1)
