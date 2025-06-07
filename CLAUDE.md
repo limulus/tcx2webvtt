@@ -40,3 +40,39 @@
   - `src/lib/` - Core functionality
   - `src/bin/` - CLI entry points
   - `src/mocks/` - Test mocks
+
+## Commit Message Guidelines
+
+Versions of this software are automatically determined by `semantic-release`. Follow
+`conventionalcommits.org` standard, specifically the `@commitlint/config-conventional`
+format.
+
+- `feat: msg`: features
+- `fix: msg`: bug fixes
+- `refactor: msg`: code improvements that do not affect functionality
+- `test: msg`: changes in tests only, does not affect functionality
+- `docs: msg`: changes to documentation
+- `ci: msg`: build pipeline
+- `chore: msg`: updating dependencies, miscellany
+- Breaking changes to exposed APIs surfaces must be documented with a footer/trailer. For
+  example:
+
+  ```
+  feat: remove the `POST /api/spline/reticulate` endpoint
+
+  BREAKING CHANGE: Support for previously deprecated spline reticulation
+    has been removed. Use `POST /api/spline/frobnicate` instead.
+  ```
+
+- Scopes may also be used:
+  - `feat(ui): increase button roundness`
+  - `docs(readme): add frobnication section`
+  - `chore(dev-deps): update dev dependencies`
+  - `chore(deps): update dependencies`
+
+Only certain commit messages will trigger changes to the semantic version of the software:
+
+- A breaking change will trigger a major version bump, regardless of the prefix
+- The `feat` prefix bumps the minor version
+- The `fix` prefix bumps the patch version
+- All other commit messages have no effect on the version
