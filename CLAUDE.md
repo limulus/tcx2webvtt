@@ -3,11 +3,11 @@
 ## Software Development Methodology
 
 - Use Test Driven Development:
-  - Write tests first
-  - Ensure new tests fail
-  - Write minimal production code to make tests pass
-  - Consider refactoring production code
-  - Ensure tests continue to pass
+  1. Write tests
+  2. Run tests to ensure they fail the expected way
+  3. Write minimal production code to make tests pass
+  4. Refactor production code
+  5. Run tests again to ensure tests continue to pass
 
 ## Commands
 
@@ -25,6 +25,7 @@
 - **ESM**: Use ES Modules (`import/export` not `require()`)
 - **File Extensions**: Always include `.js` in imports (e.g., `import x from './x.js'`)
 - **Typing**: Use strict TypeScript typing, prefer interfaces for object types
+- **Semicolons**: Do not use semicolons to end statements (rely on ASI)
 - **Naming**:
   - Classes: PascalCase
   - Methods/variables: camelCase
@@ -39,7 +40,3 @@
   - `src/lib/` - Core functionality
   - `src/bin/` - CLI entry points
   - `src/mocks/` - Test mocks
-
-## Development Plan
-
-See @PLAN.md
