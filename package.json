@@ -52,6 +52,7 @@
   "homepage": "https://github.com/limulus/tcx2webvtt#readme",
   "dependencies": {
     "fast-xml-parser": "^5.2.3",
+    "prettier": "^3.5.3",
     "tslib": "^2.8.1"
   },
   "publishConfig": {
@@ -60,14 +61,14 @@
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@limulus/eslint-config": "^5.1.0",
+    "@limulus/eslint-config": "^6.0.0",
     "@prettier/plugin-xml": "^3.4.1",
     "@types/node": "^22.15.21",
     "@vitest/browser": "^3.1.4",
     "@vitest/coverage-v8": "^3.1.4",
     "concurrently": "^9.1.2",
     "del-cli": "^6.0.0",
-    "eslint": "^8.52.0",
+    "eslint": "^9.28.0",
     "husky": "^9.1.7",
     "is-ci": "^4.1.0",
     "mkdirp": "^3.0.1",
