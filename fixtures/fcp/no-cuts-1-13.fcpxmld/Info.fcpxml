@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fcpxml>
+
+<fcpxml version="1.13">
+    <resources>
+        <format id="r1" name="FFVideoFormat3840x2160p30" frameDuration="100/3000s" width="3840" height="2160" colorSpace="9-16-9 (Rec. 2020 PQ)"/>
+        <format id="r2" name="FFVideoFormat3840x2160p2997" frameDuration="1001/30000s" width="3840" height="2160" colorSpace="1-1-1 (Rec. 709)"/>
+        <asset id="r3" name="GX010163" uid="46350EE69C6E19E13D3C5A4BE8615FDA" start="1499755257/30000s" duration="32672640/30000s" hasVideo="1" format="r2" hasAudio="1" videoSources="1" audioSources="1" audioChannels="2" audioRate="48000" customLUTOverride="LUT:37ad4adf25eeec768f3139a39ac7b057 (GPLOG_Creative_EV0)">
+            <media-rep kind="original-media" sig="46350EE69C6E19E13D3C5A4BE8615FDA" src="file:///Volumes/Pinnate/FCP/Final%20Cut%20Original%20Media/2025-04-20/GX010163.mov">
+                <bookmark>Ym9vayQEAAAAAAQQMAAAAJ/8XwyFMUktHLO6jjKkYLe2mM54nZsfa56lbTMyWiEcRAMAAAQAAAADAwAAABgAKAcAAAABAQAAVm9sdW1lcwAHAAAAAQEAAFBpbm5hdGUAAwAAAAEBAABGQ1AAGAAAAAEBAABGaW5hbCBDdXQgT3JpZ2luYWwgTWVkaWEKAAAAAQEAADIwMjUtMDQtMjAAAAwAAAABAQAAR1gwMTAxNjMubW92GAAAAAEGAAAQAAAAIAAAADAAAAA8AAAAXAAAAHAAAAAIAAAABAMAANM4AAAAAAAACAAAAAQDAAACAAAAAAAAAAgAAAAEAwAAHDwEAAAAAAAIAAAABAMAADA8BAAAAAAACAAAAAQDAACQCwUAAAAAAAgAAAAEAwAA0QoFAAAAAAAYAAAAAQYAAKQAAAC0AAAAxAAAANQAAADkAAAA9AAAAAgAAAAABAAAQcbayxuAAAAYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAAABgAAAABCQAAZmlsZTovLy9Wb2x1bWVzL1Bpbm5hdGUvCAAAAAQDAAAAQH9j6goAAAgAAAAABAAAQcYPSyqAAAAkAAAAAQEAADcwNjU4ODhGLTgyN0EtM0IzNS1CRUM4LTYyNkI3QUQwMDE5OBgAAAABAgAAAQEAAAEAAADvEwAAAQAAAAAAAAAAAAAAEAAAAAEBAAAvVm9sdW1lcy9QaW5uYXRlCAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAAUKEbcwAAAAgAAAAABAAAQcbVF0yAAAAkAAAAAQEAAEMyNDJEMzBELTdCOTgtNEU4Qy1CNDdCLUM5NzhBQTU4QkQ4MxgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAYAAAAP7///8A8AAAAAAAAAcAAAACIAAAiAIAAAAAAAAFIAAA+AEAAAAAAAAQIAAACAIAAAAAAAARIAAAPAIAAAAAAAASIAAAHAIAAAAAAAATIAAALAIAAAAAAAAgIAAAaAIAAAAAAAAEAAAAAwMAAADwAAAEAAAAAwMAAAAAAAAEAAAAAwMAAAEAAAAcAAAAAQYAAPwCAAAIAwAAFAMAAAgDAAAIAwAACAMAAAgDAACoAAAA/v///wEAAACUAgAADQAAAAQQAACEAAAAAAAAAAUQAAAEAQAAAAAAABAQAAA0AQAAAAAAAEAQAAAkAQAAAAAAAAAgAAAgAwAAAAAAAAIgAADgAQAAAAAAAAUgAABUAQAAAAAAABAgAAAgAAAAAAAAABEgAACUAQAAAAAAABIgAAB0AQAAAAAAABMgAACEAQAAAAAAACAgAADAAQAAAAAAABDQAAAEAAAAAAAAAA==</bookmark>
+            </media-rep>
+            <metadata>
+                <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-04-20 13:53:11 -0700"/>
+            </metadata>
+        </asset>
+    </resources>
+    <library location="file:///Users/eric/Movies/Travelogues.fcpbundle/" colorProcessing="wide-hdr">
+        <event name="To Honeybee Canyon Ride" uid="8F4438E0-7641-44A0-8F00-65BD45F925D6">
+            <project name="tcx2webvtt No Edits Fixture" uid="E88373D9-4B69-4B19-B4F3-66E75C844051" modDate="2025-05-10 09:58:35 -0700">
+                <sequence format="r1" duration="453/30s" tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">
+                    <spine>
+                        <clip offset="0s" name="GX010163" start="1519326809/30000s" duration="453/30s" format="r2" tcFormat="DF">
+                            <conform-rate srcFrameRate="29.97"/>
+                            <video ref="r3" offset="1499755257/30000s" start="1499755257/30000s" duration="32672640/30000s"/>
+                        </clip>
+                    </spine>
+                    <metadata>
+                        <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-05-10 09:50:50 -0700"/>
+                    </metadata>
+                </sequence>
+            </project>
+        </event>
+        <smart-collection name="Projects" match="all">
+            <match-clip rule="is" type="project"/>
+        </smart-collection>
+        <smart-collection name="All Video" match="any">
+            <match-media rule="is" type="videoOnly"/>
+            <match-media rule="is" type="videoWithAudio"/>
+        </smart-collection>
+        <smart-collection name="Audio Only" match="all">
+            <match-media rule="is" type="audioOnly"/>
+        </smart-collection>
+        <smart-collection name="Stills" match="all">
+            <match-media rule="is" type="stills"/>
+        </smart-collection>
+        <smart-collection name="Favorites" match="all">
+            <match-ratings value="favorites"/>
+        </smart-collection>
+    </library>
+</fcpxml>

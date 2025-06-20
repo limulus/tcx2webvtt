@@ -1,63 +1,38 @@
-import { Sample } from './sample.js'
-
-export interface WebVTTOptions {
-  /**
-   * Duration in milliseconds for each cue
-   * Default: 1000 (1 second)
-   */
-  cueDuration?: number
-
-  /**
-   * Start time of the first cue in milliseconds
-   * Default: 0
-   */
-  startTime?: number
-}
+import { Cue } from './cue.js'
 
 /**
- * Generates WebVTT files from TCX sample data
+ * Generates WebVTT files from Cue objects
  */
 export class WebVTTGenerator {
-  private readonly options: Required<WebVTTOptions>
-
-  constructor(options?: WebVTTOptions) {
-    this.options = {
-      cueDuration: options?.cueDuration ?? 1000,
-      startTime: options?.startTime ?? 0,
-    }
-  }
-
   /**
-   * Generates a WebVTT string from an array of Sample objects
+   * Generates a WebVTT string from an array of Cue objects
    */
-  generate(samples: Sample[]): string {
-    if (samples.length === 0) {
+  generate(cues: Cue[]): string {
+    if (cues.length === 0) {
       return this.generateHeader()
     }
 
     const lines: string[] = [this.generateHeader()]
 
-    // Process each sample and create a cue
-    samples.forEach((sample, index) => {
-      // Calculate cue start time (in milliseconds from start)
-      const startOffsetMs = this.options.startTime + index * this.options.cueDuration
-      const endOffsetMs = startOffsetMs + this.options.cueDuration
-
-      // Format timestamps
-      const startTimestamp = this.formatTimestamp(startOffsetMs)
-      const endTimestamp = this.formatTimestamp(endOffsetMs)
-
+    cues.forEach((cue, index) => {
       // Add a blank line before each cue (except the first one)
       if (index > 0) {
         lines.push('')
       }
 
+      // Format timestamps
+      const startTimestamp = this.formatTimestamp(cue.startTime)
+      const endTimestamp = this.formatTimestamp(cue.endTime)
+
       // Add the cue timing
       lines.push(`${startTimestamp} --> ${endTimestamp}`)
 
-      // Add the cue payload using the Sample's toJSON method
-      const { metric, value } = sample
-      lines.push(JSON.stringify({ metric, value }))
+      // Add the cue payload as JSON array of samples
+      const sampleData = cue.samples.map((sample) => ({
+        metric: sample.metric,
+        value: sample.value,
+      }))
+      lines.push(JSON.stringify(sampleData))
     })
 
     return lines.join('\n')

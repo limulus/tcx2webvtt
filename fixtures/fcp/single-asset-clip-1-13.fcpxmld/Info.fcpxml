@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fcpxml>
+
+<fcpxml version="1.13">
+    <resources>
+        <format id="r1" name="FFVideoFormat3840x2160p30" frameDuration="100/3000s" width="3840" height="2160" colorSpace="9-16-9 (Rec. 2020 PQ)"/>
+        <format id="r2" name="FFVideoFormat3840x2160p2997" frameDuration="1001/30000s" width="3840" height="2160" colorSpace="1-1-1 (Rec. 709)"/>
+        <asset id="r3" name="GX010163" uid="46350EE69C6E19E13D3C5A4BE8615FDA" start="1499755257/30000s" duration="32672640/30000s" hasVideo="1" format="r2" hasAudio="1" videoSources="1" audioSources="1" audioChannels="2" audioRate="48000">
+            <media-rep kind="original-media" sig="46350EE69C6E19E13D3C5A4BE8615FDA" src="file:///Volumes/Test/GX010163.mov">
+            </media-rep>
+            <metadata>
+                <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-04-20 13:53:11 -0700"/>
+            </metadata>
+        </asset>
+    </resources>
+    <library location="file:///Users/eric/Movies/Test.fcpbundle/" colorProcessing="wide-hdr">
+        <event name="Test Event" uid="8F4438E0-7641-44A0-8F00-65BD45F925D6">
+            <project name="Single Asset Clip Test" uid="E88373D9-4B69-4B19-B4F3-66E75C844051" modDate="2025-05-10 09:58:35 -0700">
+                <sequence format="r1" duration="453/30s" tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">
+                    <spine>
+                        <!-- Single asset-clip element (not an array) -->
+                        <asset-clip ref="r3" offset="0s" start="1519326809/30000s" duration="453/30s" format="r2"/>
+                    </spine>
+                </sequence>
+            </project>
+        </event>
+    </library>
+</fcpxml>

@@ -43,6 +43,8 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
     expect(stdout).toContain('Options:')
     expect(stdout).toContain('--help')
     expect(stdout).toContain('--version')
+    expect(stdout).toContain('--fcp <project>')
+    expect(stdout).toContain('Final Cut Pro project export')
     expect(stdout).toContain('<input-file>...')
     expect(mockProcess.exit).toHaveBeenCalledWith(0)
   })
@@ -172,6 +174,65 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
       await main(mockProcess)
 
       expect(stderr).toContain('Input file does not exist')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+  })
+
+  describe('--fcp option', () => {
+    it('should process FCP project with TCX file and output filtered WebVTT', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+
+      mockProcess.argv.push('--fcp', fcpProject, tcxFile)
+
+      await main(mockProcess)
+
+      // Should output WebVTT format
+      expect(stdout).toContain('WEBVTT')
+
+      // Verify that output is filtered based on FCP timeline clips.
+      const fcpOutput = stdout
+
+      // Reset and process the same TCX file without FCP filtering
+      resetMockProcess()
+      mockProcess.argv.push(tcxFile)
+      await main(mockProcess)
+      const directTcxOutput = stdout
+
+      // FCP-filtered output should be shorter (fewer cues) than direct TCX output
+      // This verifies that TimelineMapper is actually filtering based on clip ranges
+      const fcpCueCount = (fcpOutput.match(/-->/g) ?? []).length
+      const directCueCount = (directTcxOutput.match(/-->/g) ?? []).length
+      expect(fcpCueCount).toBeLessThan(directCueCount)
+      expect(fcpCueCount).toBeGreaterThan(0) // Should have some cues from overlapping times
+      expect(directCueCount).toBeGreaterThan(0) // Direct TCX should have cues
+
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should error when FCP project does not exist', async () => {
+      const nonExistentFcp = 'nonexistent.fcpxmld'
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+
+      mockProcess.argv.push('--fcp', nonExistentFcp, tcxFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('Input file does not exist')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should error when --fcp is used without TCX input file', async () => {
+      const fcpProject = join(
+        __dirname,
+        '../../fixtures/fcp/single-asset-clip-1-13.fcpxmld'
+      )
+
+      mockProcess.argv.push('--fcp', fcpProject)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('Input file is required')
       expect(mockProcess.exit).toHaveBeenCalledWith(1)
     })
   })

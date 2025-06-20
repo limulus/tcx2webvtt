@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { TCXReader, Sample, SampleMetric } from './index.js'
+import { TCXReader, Sample, SampleMetric, SequentialCueGenerator } from './index.js'
 
 describe('index', () => {
   it('should export TCXReader, Sample, and SampleKind with location support', () => {
@@ -8,6 +8,7 @@ describe('index', () => {
     expect(TCXReader).toBeDefined()
     expect(Sample).toBeDefined()
     expect(SampleMetric).toBeDefined()
+    expect(SequentialCueGenerator).toBeDefined()
 
     // Verify the SampleKind enum values
     expect(SampleMetric.HeartRate).toBe('heartRate')

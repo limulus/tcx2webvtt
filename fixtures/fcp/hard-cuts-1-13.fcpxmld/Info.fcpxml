@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fcpxml>
+
+<fcpxml version="1.13">
+    <resources>
+        <format id="r1" name="FFVideoFormat3840x2160p30" frameDuration="100/3000s" width="3840" height="2160" colorSpace="9-16-9 (Rec. 2020 PQ)"/>
+        <asset id="r2" name="GX010163" uid="46350EE69C6E19E13D3C5A4BE8615FDA" start="1499755257/30000s" duration="32672640/30000s" hasVideo="1" format="r3" hasAudio="1" videoSources="1" audioSources="1" audioChannels="2" audioRate="48000" customLUTOverride="LUT:37ad4adf25eeec768f3139a39ac7b057 (GPLOG_Creative_EV0)">
+            <media-rep kind="original-media" sig="46350EE69C6E19E13D3C5A4BE8615FDA" src="file:///Volumes/Pinnate/FCP/Final%20Cut%20Original%20Media/2025-04-20/GX010163.mov">
+                <bookmark>Ym9vayQEAAAAAAQQMAAAAADqBB0xQJb1UXb7KZ2iGgLfCtt9q/jDgNWS5TD4Qb7lRAMAAAQAAAADAwAAABgAKAcAAAABAQAAVm9sdW1lcwAHAAAAAQEAAFBpbm5hdGUAAwAAAAEBAABGQ1AAGAAAAAEBAABGaW5hbCBDdXQgT3JpZ2luYWwgTWVkaWEKAAAAAQEAADIwMjUtMDQtMjAAAAwAAAABAQAAR1gwMTAxNjMubW92GAAAAAEGAAAQAAAAIAAAADAAAAA8AAAAXAAAAHAAAAAIAAAABAMAANM4AAAAAAAACAAAAAQDAAACAAAAAAAAAAgAAAAEAwAAHDwEAAAAAAAIAAAABAMAADA8BAAAAAAACAAAAAQDAACQCwUAAAAAAAgAAAAEAwAA0QoFAAAAAAAYAAAAAQYAAKQAAAC0AAAAxAAAANQAAADkAAAA9AAAAAgAAAAABAAAQcbayxuAAAAYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAAABgAAAABCQAAZmlsZTovLy9Wb2x1bWVzL1Bpbm5hdGUvCAAAAAQDAAAAQH9j6goAAAgAAAAABAAAQcYPSyqAAAAkAAAAAQEAADcwNjU4ODhGLTgyN0EtM0IzNS1CRUM4LTYyNkI3QUQwMDE5OBgAAAABAgAAAQEAAAEAAADvEwAAAQAAAAAAAAAAAAAAEAAAAAEBAAAvVm9sdW1lcy9QaW5uYXRlCAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAAUKEbcwAAAAgAAAAABAAAQcbVF0yAAAAkAAAAAQEAAEMyNDJEMzBELTdCOTgtNEU4Qy1CNDdCLUM5NzhBQTU4QkQ4MxgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAYAAAAP7///8A8AAAAAAAAAcAAAACIAAAiAIAAAAAAAAFIAAA+AEAAAAAAAAQIAAACAIAAAAAAAARIAAAPAIAAAAAAAASIAAAHAIAAAAAAAATIAAALAIAAAAAAAAgIAAAaAIAAAAAAAAEAAAAAwMAAADwAAAEAAAAAwMAAAAAAAAEAAAAAwMAAAEAAAAcAAAAAQYAAPwCAAAIAwAAFAMAAAgDAAAIAwAACAMAAAgDAACoAAAA/v///wEAAACUAgAADQAAAAQQAACEAAAAAAAAAAUQAAAEAQAAAAAAABAQAAA0AQAAAAAAAEAQAAAkAQAAAAAAAAAgAAAgAwAAAAAAAAIgAADgAQAAAAAAAAUgAABUAQAAAAAAABAgAAAgAAAAAAAAABEgAACUAQAAAAAAABIgAAB0AQAAAAAAABMgAACEAQAAAAAAACAgAADAAQAAAAAAABDQAAAEAAAAAAAAAA==</bookmark>
+            </media-rep>
+            <metadata>
+                <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-04-20 13:53:11 -0700"/>
+            </metadata>
+        </asset>
+        <format id="r3" name="FFVideoFormat3840x2160p2997" frameDuration="1001/30000s" width="3840" height="2160" colorSpace="1-1-1 (Rec. 709)"/>
+        <asset id="r4" name="GX020163" uid="C28B666CFA40B64388E8B2B594AA6BD3" start="1532427897/30000s" duration="20900880/30000s" hasVideo="1" format="r3" hasAudio="1" videoSources="1" audioSources="1" audioChannels="2" audioRate="48000" customLUTOverride="LUT:37ad4adf25eeec768f3139a39ac7b057 (GPLOG_Creative_EV0)">
+            <media-rep kind="original-media" sig="C28B666CFA40B64388E8B2B594AA6BD3" src="file:///Volumes/Pinnate/FCP/Final%20Cut%20Original%20Media/2025-04-20/GX020163.mov">
+                <bookmark>Ym9vayQEAAAAAAQQMAAAAJo4I+CZFpqMMjGp5Lt8Tr7XeoCqR0bCR3Wbo1eeIFY6RAMAAAQAAAADAwAAABgAKAcAAAABAQAAVm9sdW1lcwAHAAAAAQEAAFBpbm5hdGUAAwAAAAEBAABGQ1AAGAAAAAEBAABGaW5hbCBDdXQgT3JpZ2luYWwgTWVkaWEKAAAAAQEAADIwMjUtMDQtMjAAAAwAAAABAQAAR1gwMjAxNjMubW92GAAAAAEGAAAQAAAAIAAAADAAAAA8AAAAXAAAAHAAAAAIAAAABAMAANM4AAAAAAAACAAAAAQDAAACAAAAAAAAAAgAAAAEAwAAHDwEAAAAAAAIAAAABAMAADA8BAAAAAAACAAAAAQDAACQCwUAAAAAAAgAAAAEAwAAkgsFAAAAAAAYAAAAAQYAAKQAAAC0AAAAxAAAANQAAADkAAAA9AAAAAgAAAAABAAAQcbazT0AAAAYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAAABgAAAABCQAAZmlsZTovLy9Wb2x1bWVzL1Bpbm5hdGUvCAAAAAQDAAAAQH9j6goAAAgAAAAABAAAQcYPSyqAAAAkAAAAAQEAADcwNjU4ODhGLTgyN0EtM0IzNS1CRUM4LTYyNkI3QUQwMDE5OBgAAAABAgAAAQEAAAEAAADvEwAAAQAAAAAAAAAAAAAAEAAAAAEBAAAvVm9sdW1lcy9QaW5uYXRlCAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAAUKEbcwAAAAgAAAAABAAAQcbVF0yAAAAkAAAAAQEAAEMyNDJEMzBELTdCOTgtNEU4Qy1CNDdCLUM5NzhBQTU4QkQ4MxgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAYAAAAP7///8A8AAAAAAAAAcAAAACIAAAiAIAAAAAAAAFIAAA+AEAAAAAAAAQIAAACAIAAAAAAAARIAAAPAIAAAAAAAASIAAAHAIAAAAAAAATIAAALAIAAAAAAAAgIAAAaAIAAAAAAAAEAAAAAwMAAADwAAAEAAAAAwMAAAAAAAAEAAAAAwMAAAEAAAAcAAAAAQYAAPwCAAAIAwAAFAMAAAgDAAAIAwAACAMAAAgDAACoAAAA/v///wEAAACUAgAADQAAAAQQAACEAAAAAAAAAAUQAAAEAQAAAAAAABAQAAA0AQAAAAAAAEAQAAAkAQAAAAAAAAAgAAAgAwAAAAAAAAIgAADgAQAAAAAAAAUgAABUAQAAAAAAABAgAAAgAAAAAAAAABEgAACUAQAAAAAAABIgAAB0AQAAAAAAABMgAACEAQAAAAAAACAgAADAAQAAAAAAABDQAAAEAAAAAAAAAA==</bookmark>
+            </media-rep>
+            <metadata>
+                <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-04-20 14:11:22 -0700"/>
+            </metadata>
+        </asset>
+    </resources>
+    <library location="file:///Users/eric/Movies/Travelogues.fcpbundle/" colorProcessing="wide-hdr">
+        <event name="To Honeybee Canyon Ride" uid="8F4438E0-7641-44A0-8F00-65BD45F925D6">
+            <project name="tcx2webvtt Hard Cuts Fixture" uid="2EBD323F-4E1C-4875-9609-9B1CADFE4EF8" modDate="2025-05-11 09:55:21 -0700">
+                <sequence format="r1" duration="2641/30s" tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">
+                    <spine>
+                        <asset-clip ref="r2" offset="0s" name="GX010163" start="63019957/1250s" duration="233/15s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="466/30s" name="GX010163" start="304745441/6000s" duration="556/30s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1022/30s" name="GX010163" start="153194041/3000s" duration="487/30s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                        <asset-clip ref="r4" offset="1509/30s" name="GX020163" start="510809299/10000s" duration="619/30s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                        <asset-clip ref="r4" offset="2128/30s" name="GX020163" start="31993962/625s" duration="171/10s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                    </spine>
+                    <metadata>
+                        <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-05-11 09:52:31 -0700"/>
+                    </metadata>
+                </sequence>
+            </project>
+        </event>
+        <smart-collection name="Projects" match="all">
+            <match-clip rule="is" type="project"/>
+        </smart-collection>
+        <smart-collection name="All Video" match="any">
+            <match-media rule="is" type="videoOnly"/>
+            <match-media rule="is" type="videoWithAudio"/>
+        </smart-collection>
+        <smart-collection name="Audio Only" match="all">
+            <match-media rule="is" type="audioOnly"/>
+        </smart-collection>
+        <smart-collection name="Stills" match="all">
+            <match-media rule="is" type="stills"/>
+        </smart-collection>
+        <smart-collection name="Favorites" match="all">
+            <match-ratings value="favorites"/>
+        </smart-collection>
+    </library>
+</fcpxml>

@@ -30,7 +30,9 @@ export class TCXReader {
 
         const trackpoints = lap.Track.Trackpoint
         for (const tp of trackpoints) {
-          const time = new Date(tp.Time)
+          // Parse time as UTC to avoid timezone issues
+          const timeStr = tp.Time
+          const time = timeStr.endsWith('Z') ? new Date(timeStr) : new Date(timeStr + 'Z')
 
           // Extract coordinates if present
           if (tp.Position?.LatitudeDegrees && tp.Position?.LongitudeDegrees) {

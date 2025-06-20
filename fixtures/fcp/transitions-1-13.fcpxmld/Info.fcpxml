@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fcpxml>
+
+<fcpxml version="1.13">
+    <resources>
+        <format id="r1" name="FFVideoFormat3840x2160p30" frameDuration="100/3000s" width="3840" height="2160" colorSpace="9-16-9 (Rec. 2020 PQ)"/>
+        <asset id="r2" name="GX010163" uid="46350EE69C6E19E13D3C5A4BE8615FDA" start="1499755257/30000s" duration="32672640/30000s" hasVideo="1" format="r3" hasAudio="1" videoSources="1" audioSources="1" audioChannels="2" audioRate="48000" customLUTOverride="LUT:37ad4adf25eeec768f3139a39ac7b057 (GPLOG_Creative_EV0)">
+            <media-rep kind="original-media" sig="46350EE69C6E19E13D3C5A4BE8615FDA" src="file:///Volumes/Pinnate/FCP/Final%20Cut%20Original%20Media/2025-04-20/GX010163.mov">
+                <bookmark>Ym9vayQEAAAAAAQQMAAAAMSbPEI5R/i+VUNCRa4jIMWZ0927A0AAUXrPX4GHOvegRAMAAAQAAAADAwAAABgAKAcAAAABAQAAVm9sdW1lcwAHAAAAAQEAAFBpbm5hdGUAAwAAAAEBAABGQ1AAGAAAAAEBAABGaW5hbCBDdXQgT3JpZ2luYWwgTWVkaWEKAAAAAQEAADIwMjUtMDQtMjAAAAwAAAABAQAAR1gwMTAxNjMubW92GAAAAAEGAAAQAAAAIAAAADAAAAA8AAAAXAAAAHAAAAAIAAAABAMAANM4AAAAAAAACAAAAAQDAAACAAAAAAAAAAgAAAAEAwAAHDwEAAAAAAAIAAAABAMAADA8BAAAAAAACAAAAAQDAACQCwUAAAAAAAgAAAAEAwAA0QoFAAAAAAAYAAAAAQYAAKQAAAC0AAAAxAAAANQAAADkAAAA9AAAAAgAAAAABAAAQcbayxuAAAAYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAAABgAAAABCQAAZmlsZTovLy9Wb2x1bWVzL1Bpbm5hdGUvCAAAAAQDAAAAQH9j6goAAAgAAAAABAAAQcYPSyqAAAAkAAAAAQEAADcwNjU4ODhGLTgyN0EtM0IzNS1CRUM4LTYyNkI3QUQwMDE5OBgAAAABAgAAAQEAAAEAAADvEwAAAQAAAAAAAAAAAAAAEAAAAAEBAAAvVm9sdW1lcy9QaW5uYXRlCAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAAUKEbcwAAAAgAAAAABAAAQcbVF0yAAAAkAAAAAQEAAEMyNDJEMzBELTdCOTgtNEU4Qy1CNDdCLUM5NzhBQTU4QkQ4MxgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAYAAAAP7///8A8AAAAAAAAAcAAAACIAAAiAIAAAAAAAAFIAAA+AEAAAAAAAAQIAAACAIAAAAAAAARIAAAPAIAAAAAAAASIAAAHAIAAAAAAAATIAAALAIAAAAAAAAgIAAAaAIAAAAAAAAEAAAAAwMAAADwAAAEAAAAAwMAAAAAAAAEAAAAAwMAAAEAAAAcAAAAAQYAAPwCAAAIAwAAFAMAAAgDAAAIAwAACAMAAAgDAACoAAAA/v///wEAAACUAgAADQAAAAQQAACEAAAAAAAAAAUQAAAEAQAAAAAAABAQAAA0AQAAAAAAAEAQAAAkAQAAAAAAAAAgAAAgAwAAAAAAAAIgAADgAQAAAAAAAAUgAABUAQAAAAAAABAgAAAgAAAAAAAAABEgAACUAQAAAAAAABIgAAB0AQAAAAAAABMgAACEAQAAAAAAACAgAADAAQAAAAAAABDQAAAEAAAAAAAAAA==</bookmark>
+            </media-rep>
+            <metadata>
+                <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-04-20 13:53:11 -0700"/>
+            </metadata>
+        </asset>
+        <format id="r3" name="FFVideoFormat3840x2160p2997" frameDuration="1001/30000s" width="3840" height="2160" colorSpace="1-1-1 (Rec. 709)"/>
+        <effect id="r4" name="Cross Dissolve" uid="FxPlug:4731E73A-8DAC-4113-9A30-AE85B1761265"/>
+        <effect id="r5" name="Audio Crossfade" uid="FFAudioTransition"/>
+        <asset id="r6" name="GX020163" uid="C28B666CFA40B64388E8B2B594AA6BD3" start="1532427897/30000s" duration="20900880/30000s" hasVideo="1" format="r3" hasAudio="1" videoSources="1" audioSources="1" audioChannels="2" audioRate="48000" customLUTOverride="LUT:37ad4adf25eeec768f3139a39ac7b057 (GPLOG_Creative_EV0)">
+            <media-rep kind="original-media" sig="C28B666CFA40B64388E8B2B594AA6BD3" src="file:///Volumes/Pinnate/FCP/Final%20Cut%20Original%20Media/2025-04-20/GX020163.mov">
+                <bookmark>Ym9vayQEAAAAAAQQMAAAADOfSvH5O+2pNu0pPCoXiAia3SpywPm1l+AjODE/VBHuRAMAAAQAAAADAwAAABgAKAcAAAABAQAAVm9sdW1lcwAHAAAAAQEAAFBpbm5hdGUAAwAAAAEBAABGQ1AAGAAAAAEBAABGaW5hbCBDdXQgT3JpZ2luYWwgTWVkaWEKAAAAAQEAADIwMjUtMDQtMjAAAAwAAAABAQAAR1gwMjAxNjMubW92GAAAAAEGAAAQAAAAIAAAADAAAAA8AAAAXAAAAHAAAAAIAAAABAMAANM4AAAAAAAACAAAAAQDAAACAAAAAAAAAAgAAAAEAwAAHDwEAAAAAAAIAAAABAMAADA8BAAAAAAACAAAAAQDAACQCwUAAAAAAAgAAAAEAwAAkgsFAAAAAAAYAAAAAQYAAKQAAAC0AAAAxAAAANQAAADkAAAA9AAAAAgAAAAABAAAQcbazT0AAAAYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAAABgAAAABCQAAZmlsZTovLy9Wb2x1bWVzL1Bpbm5hdGUvCAAAAAQDAAAAQH9j6goAAAgAAAAABAAAQcYPSyqAAAAkAAAAAQEAADcwNjU4ODhGLTgyN0EtM0IzNS1CRUM4LTYyNkI3QUQwMDE5OBgAAAABAgAAAQEAAAEAAADvEwAAAQAAAAAAAAAAAAAAEAAAAAEBAAAvVm9sdW1lcy9QaW5uYXRlCAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAAUKEbcwAAAAgAAAAABAAAQcbVF0yAAAAkAAAAAQEAAEMyNDJEMzBELTdCOTgtNEU4Qy1CNDdCLUM5NzhBQTU4QkQ4MxgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAYAAAAP7///8A8AAAAAAAAAcAAAACIAAAiAIAAAAAAAAFIAAA+AEAAAAAAAAQIAAACAIAAAAAAAARIAAAPAIAAAAAAAASIAAAHAIAAAAAAAATIAAALAIAAAAAAAAgIAAAaAIAAAAAAAAEAAAAAwMAAADwAAAEAAAAAwMAAAAAAAAEAAAAAwMAAAEAAAAcAAAAAQYAAPwCAAAIAwAAFAMAAAgDAAAIAwAACAMAAAgDAACoAAAA/v///wEAAACUAgAADQAAAAQQAACEAAAAAAAAAAUQAAAEAQAAAAAAABAQAAA0AQAAAAAAAEAQAAAkAQAAAAAAAAAgAAAgAwAAAAAAAAIgAADgAQAAAAAAAAUgAABUAQAAAAAAABAgAAAgAAAAAAAAABEgAACUAQAAAAAAABIgAAB0AQAAAAAAABMgAACEAQAAAAAAACAgAADAAQAAAAAAABDQAAAEAAAAAAAAAA==</bookmark>
+            </media-rep>
+            <metadata>
+                <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-04-20 14:11:22 -0700"/>
+            </metadata>
+        </asset>
+    </resources>
+    <library location="file:///Users/eric/Movies/Travelogues.fcpbundle/" colorProcessing="wide-hdr">
+        <event name="To Honeybee Canyon Ride" uid="8F4438E0-7641-44A0-8F00-65BD45F925D6">
+            <project name="tcx2webvtt Transitions" uid="C2720A85-EB87-4919-B725-2A36D79C00DD" modDate="2025-05-11 10:30:46 -0700">
+                <sequence format="r1" duration="97200/3000s" tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">
+                    <spine>
+                        <asset-clip ref="r2" offset="0s" name="GX010163" start="302553251/6000s" duration="34200/3000s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                        <transition name="Cross Dissolve" offset="32700/3000s" duration="1s">
+                            <filter-video ref="r4" name="Cross Dissolve">
+                                <data key="effectConfig">YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGlCwwVFhdVJG51bGzTDQ4PEBIUV05TLmtleXNaTlMub2JqZWN0c1YkY2xhc3OhEYACoROAA4AEXXBsdWdpblZlcnNpb24QAdIYGRobWiRjbGFzc25hbWVYJGNsYXNzZXNfEBNOU011dGFibGVEaWN0aW9uYXJ5oxocHVxOU0RpY3Rpb25hcnlYTlNPYmplY3QIERokKTI3SUxRU1lfZm55gIKEhoiKmJqfqrPJzdoAAAAAAAABAQAAAAAAAAAeAAAAAAAAAAAAAAAAAAAA4w==</data>
+                                <param name="Look" key="1" value="11 (Video)"/>
+                                <param name="Amount" key="2" value="50"/>
+                                <param name="Ease" key="50" value="2 (In &amp; Out)"/>
+                                <param name="Ease Amount" key="51" value="0"/>
+                            </filter-video>
+                            <filter-audio ref="r5" name="Audio Crossfade"/>
+                        </transition>
+                        <asset-clip ref="r2" offset="34200/3000s" name="GX010163" start="759307549/15000s" duration="30900/3000s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                        <transition name="Cross Dissolve" offset="63600/3000s" duration="1s">
+                            <filter-video ref="r4" name="Cross Dissolve">
+                                <data key="effectConfig">YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGlCwwVFhdVJG51bGzTDQ4PEBIUV05TLmtleXNaTlMub2JqZWN0c1YkY2xhc3OhEYACoROAA4AEXXBsdWdpblZlcnNpb24QAdIYGRobWiRjbGFzc25hbWVYJGNsYXNzZXNfEBNOU011dGFibGVEaWN0aW9uYXJ5oxocHVxOU0RpY3Rpb25hcnlYTlNPYmplY3QIERokKTI3SUxRU1lfZm55gIKEhoiKmJqfqrPJzdoAAAAAAAABAQAAAAAAAAAeAAAAAAAAAAAAAAAAAAAA4w==</data>
+                                <param name="Look" key="1" value="11 (Video)"/>
+                                <param name="Amount" key="2" value="50"/>
+                                <param name="Ease" key="50" value="2 (In &amp; Out)"/>
+                                <param name="Ease Amount" key="51" value="0"/>
+                            </filter-video>
+                            <filter-audio ref="r5" name="Audio Crossfade"/>
+                        </transition>
+                        <asset-clip ref="r6" offset="65100/3000s" name="GX020163" start="1550982433/30000s" duration="32100/3000s" format="r3" tcFormat="DF" audioRole="dialogue">
+                            <conform-rate srcFrameRate="29.97"/>
+                        </asset-clip>
+                    </spine>
+                    <metadata>
+                        <md key="com.apple.proapps.studio.metadataContentCreated" value="2025-05-11 10:27:54 -0700"/>
+                    </metadata>
+                </sequence>
+            </project>
+        </event>
+        <smart-collection name="Projects" match="all">
+            <match-clip rule="is" type="project"/>
+        </smart-collection>
+        <smart-collection name="All Video" match="any">
+            <match-media rule="is" type="videoOnly"/>
+            <match-media rule="is" type="videoWithAudio"/>
+        </smart-collection>
+        <smart-collection name="Audio Only" match="all">
+            <match-media rule="is" type="audioOnly"/>
+        </smart-collection>
+        <smart-collection name="Stills" match="all">
+            <match-media rule="is" type="stills"/>
+        </smart-collection>
+        <smart-collection name="Favorites" match="all">
+            <match-ratings value="favorites"/>
+        </smart-collection>
+    </library>
+</fcpxml>
