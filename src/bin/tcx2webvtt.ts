@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
+
 import {
   Cue,
   FCPReader,
@@ -14,7 +15,7 @@ import {
   TCXReader,
   TimelineMapper,
   WebVTTGenerator,
-} from 'tcx2webvtt'
+} from '../index.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
