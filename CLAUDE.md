@@ -76,3 +76,5 @@ Only certain commit messages will trigger changes to the semantic version of the
 - The `feat` prefix bumps the minor version
 - The `fix` prefix bumps the patch version
 - All other commit messages have no effect on the version
+
+- Do not include the string `Breaking change:` in a commit message unless there is a breaking change.
