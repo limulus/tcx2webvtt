@@ -37,6 +37,7 @@ Examples:
   tcx2webvtt --fcp project.fcpxmld workout.tcx > filtered.vtt
   tcx2webvtt --fcp project.fcpxmld --clip-offset GX010163,2.5 workout.tcx
   tcx2webvtt --fcp project.fcpxmld --clip-offset *,-1.0 workout.tcx
+  tcx2webvtt --fcp project.fcpxmld --clip-offset GX010163,2.5 --clip-offset GX020163,-1.0 workout.tcx
   tcx2webvtt --hls ./hls-output workout.tcx
   `)
 }
@@ -62,7 +63,7 @@ export async function main(proc: ProcessLike) {
         version: { type: 'boolean', short: 'v' },
         fcp: { type: 'string' },
         hls: { type: 'string' },
-        'clip-offset': { type: 'string' },
+        'clip-offset': { type: 'string', multiple: true },
       },
       allowPositionals: true,
     })
@@ -100,30 +101,36 @@ export async function main(proc: ProcessLike) {
       proc.exit(1)
     }
 
-    // Validate clip-offset argument
+    // Validate clip-offset arguments
     if (values['clip-offset']) {
       if (!values.fcp) {
         proc.stderr.write('Error: --clip-offset can only be used with --fcp\n')
         proc.exit(1)
       }
 
-      const clipOffsetParts = values['clip-offset'].split(',')
-      if (
-        clipOffsetParts.length !== 2 ||
-        !clipOffsetParts[0].trim() ||
-        !clipOffsetParts[1].trim()
-      ) {
-        proc.stderr.write(
-          'Error: Invalid clip-offset format. Expected: <clip-id>,<seconds>\n'
-        )
-        proc.exit(1)
-      }
+      const clipOffsets = Array.isArray(values['clip-offset'])
+        ? values['clip-offset']
+        : [values['clip-offset']]
 
-      const [, offsetStr] = clipOffsetParts.map((s) => s.trim())
-      const offsetSeconds = parseFloat(offsetStr)
-      if (isNaN(offsetSeconds)) {
-        proc.stderr.write('Error: Invalid clip-offset format. Offset must be a number\n')
-        proc.exit(1)
+      for (const clipOffset of clipOffsets) {
+        const clipOffsetParts = clipOffset.split(',')
+        if (
+          clipOffsetParts.length !== 2 ||
+          !clipOffsetParts[0].trim() ||
+          !clipOffsetParts[1].trim()
+        ) {
+          proc.stderr.write(
+            'Error: Invalid clip-offset format. Expected: <clip-id>,<seconds>\n'
+          )
+          proc.exit(1)
+        }
+
+        const [, offsetStr] = clipOffsetParts.map((s) => s.trim())
+        const offsetSeconds = parseFloat(offsetStr)
+        if (isNaN(offsetSeconds)) {
+          proc.stderr.write('Error: Invalid clip-offset format. Offset must be a number\n')
+          proc.exit(1)
+        }
       }
     }
 
@@ -159,9 +166,16 @@ export async function main(proc: ProcessLike) {
       // Parse clip offsets if provided
       let clipOffsets: Map<string, number> | undefined
       if (values['clip-offset']) {
-        const [clipId, offsetStr] = values['clip-offset'].split(',').map((s) => s.trim())
-        const offsetMs = parseFloat(offsetStr) * 1000 // Convert seconds to milliseconds
-        clipOffsets = new Map([[clipId, offsetMs]])
+        const clipOffsetStrings = Array.isArray(values['clip-offset'])
+          ? values['clip-offset']
+          : [values['clip-offset']]
+
+        clipOffsets = new Map()
+        for (const clipOffsetString of clipOffsetStrings) {
+          const [clipId, offsetStr] = clipOffsetString.split(',').map((s) => s.trim())
+          const offsetMs = parseFloat(offsetStr) * 1000 // Convert seconds to milliseconds
+          clipOffsets.set(clipId, offsetMs)
+        }
       }
 
       const timelineMapper = new TimelineMapper({

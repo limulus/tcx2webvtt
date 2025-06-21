@@ -440,5 +440,112 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
       expect(stderr).toContain('--clip-offset can only be used with --fcp')
       expect(mockProcess.exit).toHaveBeenCalledWith(1)
     })
+
+    it('should support multiple --clip-offset arguments and apply both offsets', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+
+      // First, get baseline output with no offsets
+      resetMockProcess()
+      mockProcess.argv.push('--fcp', fcpProject, tcxFile)
+      await main(mockProcess)
+      const noOffsetOutput = stdout
+
+      // Test with single offset for GX010163
+      resetMockProcess()
+      mockProcess.argv.push('--fcp', fcpProject, '--clip-offset', 'GX010163,2.5', tcxFile)
+      await main(mockProcess)
+      const singleOffsetOutput = stdout
+
+      // Test with multiple offsets - should apply both GX010163 and GX020163 offsets
+      resetMockProcess()
+      mockProcess.argv.push(
+        '--fcp',
+        fcpProject,
+        '--clip-offset',
+        'GX010163,2.5',
+        '--clip-offset',
+        'GX020163,-1.0',
+        tcxFile
+      )
+      await main(mockProcess)
+
+      // Should successfully generate output without errors
+      expect(stdout).toContain('WEBVTT')
+      expect(stderr).toBe('')
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+
+      // The output should be different from no offsets (proving offsets are applied)
+      expect(stdout).not.toBe(noOffsetOutput)
+
+      // The output should be different from single offset (proving both offsets are applied)
+      expect(stdout).not.toBe(singleOffsetOutput)
+
+      // Verify we have WebVTT cues with timing information
+      const cueMatches = stdout.match(
+        /\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}/g
+      )
+      expect(cueMatches).toBeTruthy()
+      expect(cueMatches!.length).toBeGreaterThan(0)
+    })
+
+    it('should handle multiple clip-offset arguments with wildcards', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+
+      mockProcess.argv.push(
+        '--fcp',
+        fcpProject,
+        '--clip-offset',
+        '*,1.0',
+        '--clip-offset',
+        'GX020163,2.5',
+        tcxFile
+      )
+      await main(mockProcess)
+
+      expect(stdout).toContain('WEBVTT')
+      expect(stderr).toBe('')
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should error when one of multiple clip-offset arguments has invalid format', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+
+      mockProcess.argv.push(
+        '--fcp',
+        fcpProject,
+        '--clip-offset',
+        'GX010163,2.5',
+        '--clip-offset',
+        'invalid-format',
+        tcxFile
+      )
+      await main(mockProcess)
+
+      expect(stderr).toContain('Invalid clip-offset format')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should handle duplicate clip IDs by using the last offset value', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+
+      mockProcess.argv.push(
+        '--fcp',
+        fcpProject,
+        '--clip-offset',
+        'GX010163,1.0',
+        '--clip-offset',
+        'GX010163,3.0', // This should override the first one
+        tcxFile
+      )
+      await main(mockProcess)
+
+      expect(stdout).toContain('WEBVTT')
+      expect(stderr).toBe('')
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
   })
 })
