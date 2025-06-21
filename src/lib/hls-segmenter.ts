@@ -1,0 +1,164 @@
+import { mkdir, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+
+import { Cue } from './cue.js'
+
+export interface HLSSegment {
+  filename: string
+  duration: number
+  content: string
+}
+
+/**
+ * Segments WebVTT cues for HTTP Live Streaming (HLS)
+ */
+export class HLSSegmenter {
+  private readonly segmentDuration: number
+
+  constructor(segmentDuration: number = 60000) {
+    this.segmentDuration = segmentDuration // in milliseconds
+  }
+
+  /**
+   * Segments cues into HLS-compatible WebVTT files and generates M3U8 playlist
+   */
+  async generateHLS(cues: Cue[], outputDirectory: string): Promise<void> {
+    // Create output directory if it doesn't exist
+    await mkdir(outputDirectory, { recursive: true })
+
+    // Generate segments
+    const segments = this.segmentCues(cues)
+
+    // Write segment files
+    await Promise.all(
+      segments.map((segment) =>
+        writeFile(join(outputDirectory, segment.filename), segment.content)
+      )
+    )
+
+    // Generate and write playlist
+    const playlist = this.generatePlaylist(segments)
+    await writeFile(join(outputDirectory, 'index.m3u8'), playlist)
+  }
+
+  /**
+   * Segments cues into time-based chunks
+   */
+  segmentCues(cues: Cue[]): HLSSegment[] {
+    if (cues.length === 0) {
+      return [this.createEmptySegment(0)]
+    }
+
+    const segments: HLSSegment[] = []
+    const totalDuration = Math.max(...cues.map((cue) => cue.endTime))
+    const segmentCount = Math.ceil(totalDuration / this.segmentDuration)
+
+    for (let i = 0; i < segmentCount; i++) {
+      const segmentStart = i * this.segmentDuration
+      const segmentEnd = Math.min((i + 1) * this.segmentDuration, totalDuration)
+
+      // Find cues that overlap with this segment
+      const segmentCues = cues.filter(
+        (cue) => cue.startTime < segmentEnd && cue.endTime > segmentStart
+      )
+
+      const segment = this.createSegment(i, segmentCues, segmentStart, segmentEnd)
+      segments.push(segment)
+    }
+
+    return segments
+  }
+
+  /**
+   * Creates a WebVTT segment from cues
+   */
+  private createSegment(
+    index: number,
+    cues: Cue[],
+    segmentStart: number,
+    segmentEnd: number
+  ): HLSSegment {
+    const filename = `fileSequence${index}.webvtt`
+    const duration = (segmentEnd - segmentStart) / 1000 // Convert to seconds
+
+    let content = 'WEBVTT\n'
+    content += 'X-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000\n'
+
+    if (cues.length > 0) {
+      cues.forEach((cue, cueIndex) => {
+        // Add blank line before each cue (except the first one)
+        if (cueIndex > 0) {
+          content += '\n'
+        }
+
+        // Format timestamps
+        const startTimestamp = this.formatTimestamp(cue.startTime)
+        const endTimestamp = this.formatTimestamp(cue.endTime)
+
+        // Add the cue timing
+        content += `\n${startTimestamp} --> ${endTimestamp}\n`
+
+        // Add the cue payload as JSON array of samples
+        const sampleData = cue.samples.map((sample) => ({
+          metric: sample.metric,
+          value: sample.value,
+        }))
+        content += JSON.stringify(sampleData)
+      })
+    }
+
+    return {
+      filename,
+      duration,
+      content,
+    }
+  }
+
+  /**
+   * Creates an empty WebVTT segment
+   */
+  private createEmptySegment(index: number): HLSSegment {
+    const filename = `fileSequence${index}.webvtt`
+    const content = 'WEBVTT\nX-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000\n'
+
+    return {
+      filename,
+      duration: this.segmentDuration / 1000, // Convert to seconds
+      content,
+    }
+  }
+
+  /**
+   * Generates M3U8 playlist from segments
+   */
+  generatePlaylist(segments: HLSSegment[]): string {
+    const maxDuration = Math.max(...segments.map((s) => s.duration))
+
+    let playlist = '#EXTM3U\n'
+    playlist += '#EXT-X-VERSION:6\n'
+    playlist += `#EXT-X-TARGETDURATION:${Math.ceil(maxDuration)}\n`
+    playlist += '#EXT-X-MEDIA-SEQUENCE:0\n'
+    playlist += '#EXT-X-PLAYLIST-TYPE:VOD\n'
+
+    segments.forEach((segment) => {
+      playlist += `#EXTINF:${segment.duration.toFixed(5)},\t\n`
+      playlist += `${segment.filename}\n`
+    })
+
+    playlist += '#EXT-X-ENDLIST\n'
+    return playlist
+  }
+
+  /**
+   * Formats a timestamp for WebVTT in the format HH:MM:SS.mmm
+   */
+  private formatTimestamp(milliseconds: number): string {
+    const totalSeconds = Math.floor(milliseconds / 1000)
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const seconds = totalSeconds % 60
+    const ms = milliseconds % 1000
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${ms.toString().padStart(3, '0')}`
+  }
+}

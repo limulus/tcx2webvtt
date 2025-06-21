@@ -1,6 +1,8 @@
+import { existsSync } from 'node:fs'
+import { readFile, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 import { main, ProcessLike } from './tcx2webvtt.js'
 
@@ -44,7 +46,9 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
     expect(stdout).toContain('--help')
     expect(stdout).toContain('--version')
     expect(stdout).toContain('--fcp <project>')
+    expect(stdout).toContain('--hls <directory>')
     expect(stdout).toContain('Final Cut Pro project export')
+    expect(stdout).toContain('HLS-compatible segmented output')
     expect(stdout).toContain('<input-file>...')
     expect(mockProcess.exit).toHaveBeenCalledWith(0)
   })
@@ -234,6 +238,129 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
 
       expect(stderr).toContain('Input file is required')
       expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+  })
+
+  describe('--hls option', () => {
+    let testDir: string
+
+    beforeEach(async () => {
+      testDir = join(__dirname, '../../test-hls-cli-output')
+    })
+
+    afterEach(async () => {
+      try {
+        await rm(testDir, { recursive: true, force: true })
+      } catch {
+        // Ignore errors if directory doesn't exist
+      }
+    })
+
+    it('should generate HLS output files in specified directory', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--hls', testDir, tcxFile)
+
+      await main(mockProcess)
+
+      // Check that HLS files were created
+      const playlistExists = existsSync(join(testDir, 'index.m3u8'))
+      expect(playlistExists).toBe(true)
+
+      const segmentExists = existsSync(join(testDir, 'fileSequence0.webvtt'))
+      expect(segmentExists).toBe(true)
+
+      // Verify playlist content
+      const playlist = await readFile(join(testDir, 'index.m3u8'), 'utf-8')
+      expect(playlist).toContain('#EXTM3U')
+      expect(playlist).toContain('#EXT-X-TARGETDURATION:')
+      expect(playlist).toContain('fileSequence0.webvtt')
+      expect(playlist).toContain('#EXT-X-ENDLIST')
+
+      // Verify segment content
+      const segment = await readFile(join(testDir, 'fileSequence0.webvtt'), 'utf-8')
+      expect(segment).toContain('WEBVTT')
+      expect(segment).toContain('X-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000')
+      expect(segment).toContain('"metric"')
+
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should error when HLS directory path is empty', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--hls', '', tcxFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('HLS directory path cannot be empty')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should error when HLS directory path is whitespace only', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--hls', '   ', tcxFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('HLS directory path cannot be empty')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should work with multiple TCX files in HLS mode', async () => {
+      const file1 = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      const file2 = join(__dirname, '../../fixtures/tcx/honeybee-canyon-hike.tcx')
+      mockProcess.argv.push('--hls', testDir, file1, file2)
+
+      await main(mockProcess)
+
+      // Check that HLS files were created
+      const playlistExists = existsSync(join(testDir, 'index.m3u8'))
+      expect(playlistExists).toBe(true)
+
+      const segmentExists = existsSync(join(testDir, 'fileSequence0.webvtt'))
+      expect(segmentExists).toBe(true)
+
+      // Verify segment contains data from both files
+      const segment = await readFile(join(testDir, 'fileSequence0.webvtt'), 'utf-8')
+      expect(segment).toContain('"metric"')
+
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should work with --fcp and --hls options together', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      mockProcess.argv.push('--fcp', fcpProject, '--hls', testDir, tcxFile)
+
+      await main(mockProcess)
+
+      // Check that HLS files were created
+      const playlistExists = existsSync(join(testDir, 'index.m3u8'))
+      expect(playlistExists).toBe(true)
+
+      const segmentExists = existsSync(join(testDir, 'fileSequence0.webvtt'))
+      expect(segmentExists).toBe(true)
+
+      // Verify playlist and segment content
+      const playlist = await readFile(join(testDir, 'index.m3u8'), 'utf-8')
+      expect(playlist).toContain('#EXTM3U')
+
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should not output to stdout when --hls is used', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--hls', testDir, tcxFile)
+
+      await main(mockProcess)
+
+      // stdout should be empty when using --hls
+      expect(stdout).toBe('')
+
+      // But files should be created
+      const playlistExists = existsSync(join(testDir, 'index.m3u8'))
+      expect(playlistExists).toBe(true)
+
+      expect(mockProcess.exit).not.toHaveBeenCalled()
     })
   })
 })

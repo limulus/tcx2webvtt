@@ -8,6 +8,7 @@ import { parseArgs } from 'node:util'
 
 import { Cue } from '../lib/cue.js'
 import { FCPReader } from '../lib/fcp-reader.js'
+import { HLSSegmenter } from '../lib/hls-segmenter.js'
 import { SampleIndex } from '../lib/sample-index.js'
 import { SequentialCueGenerator } from '../lib/sequential-cue-generator.js'
 import { TCXReader } from '../lib/tcx-reader.js'
@@ -27,11 +28,13 @@ Options:
   -h, --help                Display this help message
   -v, --version             Display version information
       --fcp <project>       Final Cut Pro project export for filtering
+      --hls <directory>     Generate HLS-compatible segmented output
 
 Examples:
   tcx2webvtt workout.tcx > workout.vtt
   tcx2webvtt workout1.tcx workout2.tcx > combined.vtt
   tcx2webvtt --fcp project.fcpxmld workout.tcx > filtered.vtt
+  tcx2webvtt --hls ./hls-output workout.tcx
   `)
 }
 
@@ -55,6 +58,7 @@ export async function main(proc: ProcessLike) {
         help: { type: 'boolean', short: 'h' },
         version: { type: 'boolean', short: 'v' },
         fcp: { type: 'string' },
+        hls: { type: 'string' },
       },
       allowPositionals: true,
     })
@@ -83,6 +87,12 @@ export async function main(proc: ProcessLike) {
     // Check if FCP project exists (when --fcp is used)
     if (values.fcp && !existsSync(values.fcp)) {
       proc.stderr.write(`Error: Input file does not exist: ${values.fcp}\n`)
+      proc.exit(1)
+    }
+
+    // Validate HLS directory argument
+    if (values.hls !== undefined && !values.hls.trim()) {
+      proc.stderr.write('Error: HLS directory path cannot be empty\n')
       proc.exit(1)
     }
 
@@ -123,12 +133,17 @@ export async function main(proc: ProcessLike) {
       cues = cueGenerator.generateCues(allSamples)
     }
 
-    // Generate WebVTT
-    const webvttGenerator = new WebVTTGenerator()
-    const webvttOutput = webvttGenerator.generate(cues)
-
-    // Output to stdout
-    proc.stdout.write(webvttOutput)
+    // Generate output
+    if (values.hls) {
+      // Generate HLS segmented output
+      const hlsSegmenter = new HLSSegmenter()
+      await hlsSegmenter.generateHLS(cues, values.hls)
+    } else {
+      // Generate WebVTT and output to stdout
+      const webvttGenerator = new WebVTTGenerator()
+      const webvttOutput = webvttGenerator.generate(cues)
+      proc.stdout.write(webvttOutput)
+    }
   } catch (error) {
     proc.stderr.write(`Error: ${error}\n`)
     proc.exit(1)
