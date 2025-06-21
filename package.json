@@ -2,14 +2,12 @@
   "name": "tcx2webvtt",
   "version": "1.0.0",
   "description": "Convert a TCX workout file to WebVTT with JSON metadata",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "files": [
@@ -22,11 +20,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "npm run clean",
-    "build": "concurrently -c auto 'npm:build:*'",
-    "build:cjs": "tsc --incremental false --module commonjs --outDir dist/cjs",
-    "build:dts": "tsc --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
-    "build:esm": "tsc --incremental false --outDir dist/esm",
-    "postbuild:cjs": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
+    "build": "tsc --incremental false --declaration --declarationMap --outDir dist",
     "clean": "del-cli *.tsbuildinfo coverage dist",
     "lint": "eslint *.ts src",
     "lint:fix": "npm run lint -- --fix",

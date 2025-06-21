@@ -5,15 +5,16 @@ import { readFile } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
-
-import { Cue } from '../lib/cue.js'
-import { FCPReader } from '../lib/fcp-reader.js'
-import { HLSSegmenter } from '../lib/hls-segmenter.js'
-import { SampleIndex } from '../lib/sample-index.js'
-import { SequentialCueGenerator } from '../lib/sequential-cue-generator.js'
-import { TCXReader } from '../lib/tcx-reader.js'
-import { TimelineMapper } from '../lib/timeline-mapper.js'
-import { WebVTTGenerator } from '../lib/webvtt-generator.js'
+import {
+  Cue,
+  FCPReader,
+  HLSSegmenter,
+  SampleIndex,
+  SequentialCueGenerator,
+  TCXReader,
+  TimelineMapper,
+  WebVTTGenerator,
+} from 'tcx2webvtt'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
