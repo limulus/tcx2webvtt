@@ -108,9 +108,7 @@ export async function main(proc: ProcessLike) {
         proc.exit(1)
       }
 
-      const clipOffsets = Array.isArray(values['clip-offset'])
-        ? values['clip-offset']
-        : [values['clip-offset']]
+      const clipOffsets = values['clip-offset']
 
       for (const clipOffset of clipOffsets) {
         const clipOffsetParts = clipOffset.split(',')
@@ -166,9 +164,7 @@ export async function main(proc: ProcessLike) {
       // Parse clip offsets if provided
       let clipOffsets: Map<string, number> | undefined
       if (values['clip-offset']) {
-        const clipOffsetStrings = Array.isArray(values['clip-offset'])
-          ? values['clip-offset']
-          : [values['clip-offset']]
+        const clipOffsetStrings = values['clip-offset']
 
         clipOffsets = new Map()
         for (const clipOffsetString of clipOffsetStrings) {

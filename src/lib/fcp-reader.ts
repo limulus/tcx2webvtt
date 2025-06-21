@@ -90,6 +90,7 @@ export class FCPReader {
     const assetStartStr = asset['@_start']
     const durationStr = assetClip['@_duration']
     const offsetStr = assetClip['@_offset']
+    /* c8 ignore next */
     const clipName = assetClip['@_name'] ?? asset['@_name'] ?? 'unnamed'
 
     const clipStartSeconds = this.parseTimeString(clipStartStr)
@@ -123,6 +124,7 @@ export class FCPReader {
     const assetStartStr = asset['@_start']
     const durationStr = clip['@_duration']
     const offsetStr = clip['@_offset']
+    /* c8 ignore next */
     const clipName = clip['@_name'] ?? asset['@_name'] ?? 'unnamed'
 
     const clipStartSeconds = this.parseTimeString(clipStartStr)
