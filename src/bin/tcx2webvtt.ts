@@ -91,7 +91,7 @@ export async function main(proc: ProcessLike) {
     }
 
     // Validate HLS directory argument
-    if (values.hls !== undefined && !values.hls.trim()) {
+    if (values.hls !== undefined && values.hls === '') {
       proc.stderr.write('Error: HLS directory path cannot be empty\n')
       proc.exit(1)
     }

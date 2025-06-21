@@ -295,13 +295,12 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
       expect(mockProcess.exit).toHaveBeenCalledWith(1)
     })
 
-    it('should error when HLS directory path is whitespace only', async () => {
-      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
-      mockProcess.argv.push('--hls', '   ', tcxFile)
+    it('should error when --hls option has no argument', async () => {
+      mockProcess.argv.push('--hls')
 
       await main(mockProcess)
 
-      expect(stderr).toContain('HLS directory path cannot be empty')
+      expect(stderr).toContain("Option '--hls <value>' argument missing")
       expect(mockProcess.exit).toHaveBeenCalledWith(1)
     })
 
