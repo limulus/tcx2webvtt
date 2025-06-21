@@ -125,13 +125,12 @@ describe('FCPReader', () => {
       await expect(reader.getClips()).rejects.toThrow()
     })
 
-    it('should handle clips with assets missing metadataContentCreated', async () => {
+    it('should throw when spine elements reference assets missing metadataContentCreated', async () => {
       const bundlePath = join(fixturesDir, 'missing-metadata-1-13.fcpxmld')
       const reader = new FCPReader(bundlePath)
-      const clips = await reader.getClips()
 
-      // Should return empty array since both assets lack metadataContentCreated
-      expect(clips).toHaveLength(0)
+      // Should throw assertion error since spine references missing assets
+      await expect(reader.getClips()).rejects.toThrow('Asset not found for reference: r3')
     })
 
     it('should handle projects with no spine element', async () => {
@@ -156,13 +155,12 @@ describe('FCPReader', () => {
       expect(clips[0].offset).toBe(0) // offset="0s"
     })
 
-    it('should handle asset-clip elements with missing metadata', async () => {
+    it('should throw when asset-clip elements reference assets with missing metadata', async () => {
       const bundlePath = join(fixturesDir, 'missing-metadata-asset-clip-1-13.fcpxmld')
       const reader = new FCPReader(bundlePath)
-      const clips = await reader.getClips()
 
-      // Should return empty array since asset-clip lacks metadataContentCreated
-      expect(clips).toHaveLength(0)
+      // Should throw assertion error since asset-clip references missing assets
+      await expect(reader.getClips()).rejects.toThrow('Asset not found for reference: r3')
     })
 
     it('should use asset name when clip name is not available', async () => {
