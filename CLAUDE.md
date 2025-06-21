@@ -9,17 +9,6 @@
   4. Refactor production code
   5. Run tests again to ensure tests continue to pass
 
-## Commands
-
-- Build: `npm run build`
-- Clean: `npm run clean`
-- Lint: `npm run lint`
-- Fix linting: `npm run lint:fix`
-- Type check: `npm run tscc`
-- Test (all): `npm run test`
-- Test (single file): `npm test -- src/path/to/file.spec.ts`
-- Verify (lint+test+typecheck): `npm run verify`
-
 ## Code Style Guidelines
 
 - **ESM**: Use ES Modules (`import/export` not `require()`)
@@ -40,6 +29,21 @@
   - `src/lib/` - Core functionality
   - `src/bin/` - CLI entry points
   - `src/mocks/` - Test mocks
+- **Type Safety**:
+  - Avoid the use of the `any` type in implementation code. Prefer `unknown` when the type is not known. It can be ok to use `any` in edge-case tests.
+- **Error Handling and Assertions**:
+  - Prefer runtime assertions over defensive conditionals that are difficult to test and tedious to cover.
+
+## Commands
+
+- Build: `npm run build`
+- Clean: `npm run clean`
+- Lint: `npm run lint`
+- Fix linting: `npm run lint:fix`
+- Type check: `npm run tscc`
+- Test (all): `npm run test`
+- Test (single file): `npm test -- src/path/to/file.spec.ts`
+- Verify (lint+test+typecheck): `npm run verify`
 
 ## Commit Message Guidelines
 
