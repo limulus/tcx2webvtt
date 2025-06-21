@@ -69,6 +69,7 @@ export class FCPReader {
       }
     }
 
+    // Sort clips by offset and return
     return clips.sort((a, b) => a.offset - b.offset)
   }
 
@@ -89,6 +90,7 @@ export class FCPReader {
     const assetStartStr = asset['@_start']
     const durationStr = assetClip['@_duration']
     const offsetStr = assetClip['@_offset']
+    const clipName = assetClip['@_name'] ?? asset['@_name'] ?? 'unnamed'
 
     const clipStartSeconds = this.parseTimeString(clipStartStr)
     const assetStartSeconds = this.parseTimeString(assetStartStr)
@@ -100,7 +102,7 @@ export class FCPReader {
     const captureStart = new Date(baseTime.getTime() + elapsedSeconds * 1000)
     const captureEnd = new Date(captureStart.getTime() + durationMs)
 
-    return new Clip(captureStart, captureEnd, durationMs, offsetMs)
+    return new Clip(clipName, captureStart, captureEnd, durationMs, offsetMs)
   }
 
   private parseRegularClip(clip: any, assets: Map<string, any>): Clip | null {
@@ -121,6 +123,7 @@ export class FCPReader {
     const assetStartStr = asset['@_start']
     const durationStr = clip['@_duration']
     const offsetStr = clip['@_offset']
+    const clipName = clip['@_name'] ?? asset['@_name'] ?? 'unnamed'
 
     const clipStartSeconds = this.parseTimeString(clipStartStr)
     const assetStartSeconds = this.parseTimeString(assetStartStr)
@@ -132,7 +135,7 @@ export class FCPReader {
     const captureStart = new Date(baseTime.getTime() + elapsedSeconds * 1000)
     const captureEnd = new Date(captureStart.getTime() + durationMs)
 
-    return new Clip(captureStart, captureEnd, durationMs, offsetMs)
+    return new Clip(clipName, captureStart, captureEnd, durationMs, offsetMs)
   }
 
   private parseTimeString(timeStr: string): number {

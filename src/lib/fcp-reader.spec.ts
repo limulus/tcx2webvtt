@@ -27,6 +27,8 @@ describe('FCPReader', () => {
       expect(clips[0]).toBeInstanceOf(Clip)
 
       const clip = clips[0]
+      // Should use the asset name from the FCP XML
+      expect(clip.id).toBe('GX010163')
       // Asset r3 has metadataContentCreated "2025-04-20 13:53:11 -0700"
       // Clip has start="1519326809/30000s" which needs to be added to capture time
       expect(clip.captureStart).toBeInstanceOf(Date)
@@ -49,14 +51,20 @@ describe('FCPReader', () => {
         expect(clip.offset).toBeGreaterThanOrEqual(0)
       })
 
-      // First clip: asset-clip ref="r2" offset="0s" start="63019957/1250s" duration="233/15s"
+      // First clip: asset-clip ref="r2" name="GX010163" offset="0s" start="63019957/1250s" duration="233/15s"
       const firstClip = clips[0]
+      expect(firstClip.id).toBe('GX010163')
       expect(firstClip.offset).toBe(0) // offset="0s"
       expect(firstClip.duration).toBe(15533) // 233/15s ≈ 15.533s = 15533ms
 
-      // Second clip: asset-clip ref="r2" offset="466/30s"
+      // Second clip: asset-clip ref="r2" name="GX010163" offset="466/30s"
       const secondClip = clips[1]
+      expect(secondClip.id).toBe('GX010163')
       expect(secondClip.offset).toBe(15533) // 466/30s ≈ 15.533s = 15533ms
+
+      // Fourth clip: asset-clip ref="r4" name="GX020163" offset="1509/30s"
+      const fourthClip = clips[3]
+      expect(fourthClip.id).toBe('GX020163')
 
       // Clips should be in chronological order by offset
       for (let i = 1; i < clips.length; i++) {
@@ -143,6 +151,7 @@ describe('FCPReader', () => {
       // Should parse single asset-clip successfully
       expect(clips).toHaveLength(1)
       expect(clips[0]).toBeInstanceOf(Clip)
+      expect(clips[0].id).toBe('GX010163')
       expect(clips[0].duration).toBe(15100) // 453/30s = 15.1s = 15100ms
       expect(clips[0].offset).toBe(0) // offset="0s"
     })
@@ -154,6 +163,19 @@ describe('FCPReader', () => {
 
       // Should return empty array since asset-clip lacks metadataContentCreated
       expect(clips).toHaveLength(0)
+    })
+
+    it('should use asset name when clip name is not available', async () => {
+      const bundlePath = join(fixturesDir, 'hard-cuts-1-13.fcpxmld')
+      const reader = new FCPReader(bundlePath)
+      const clips = await reader.getClips()
+
+      // All clips should have names from the asset-clip name attribute
+      expect(clips).toHaveLength(5)
+      clips.forEach((clip) => {
+        expect(clip.id).toMatch(/^GX\d+163$/) // Should match asset names like GX010163, GX020163
+        expect(clip.id).not.toBe('unnamed') // Should not fall back to default
+      })
     })
   })
 

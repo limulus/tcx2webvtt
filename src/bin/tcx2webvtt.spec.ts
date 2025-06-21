@@ -47,6 +47,7 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
     expect(stdout).toContain('--version')
     expect(stdout).toContain('--fcp <project>')
     expect(stdout).toContain('--hls <directory>')
+    expect(stdout).toContain('--clip-offset <id,seconds>')
     expect(stdout).toContain('Final Cut Pro project export')
     expect(stdout).toContain('HLS-compatible segmented output')
     expect(stdout).toContain('<input-file>...')
@@ -360,6 +361,84 @@ describe('tcx2webvtt CLI', { timeout: 10000 }, () => {
       expect(playlistExists).toBe(true)
 
       expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('--clip-offset option', () => {
+    it('should error when clip-offset format is invalid (missing comma)', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--clip-offset', 'invalid-format', tcxFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('Invalid clip-offset format')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should error when clip-offset format is invalid (non-numeric offset)', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--clip-offset', '0,invalid', tcxFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('Invalid clip-offset format')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should error when clip-offset format is invalid (empty values)', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--clip-offset', ',', tcxFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('Invalid clip-offset format')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
+    })
+
+    it('should accept valid clip-offset with specific clip ID', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      mockProcess.argv.push('--fcp', fcpProject, '--clip-offset', 'GX010163,2.5', tcxFile)
+
+      await main(mockProcess)
+
+      // Should successfully generate output without errors
+      expect(stdout).toContain('WEBVTT')
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should accept valid clip-offset with wildcard', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      mockProcess.argv.push('--fcp', fcpProject, '--clip-offset', '*,1.0', tcxFile)
+
+      await main(mockProcess)
+
+      // Should successfully generate output without errors
+      expect(stdout).toContain('WEBVTT')
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should accept negative offset values', async () => {
+      const fcpProject = join(__dirname, '../../fixtures/fcp/hard-cuts-1-13.fcpxmld')
+      const tcxFile = join(__dirname, '../../fixtures/tcx/honeybee-canyon-cycle.tcx')
+      mockProcess.argv.push('--fcp', fcpProject, '--clip-offset', 'GX020163,-1.5', tcxFile)
+
+      await main(mockProcess)
+
+      // Should successfully generate output without errors
+      expect(stdout).toContain('WEBVTT')
+      expect(mockProcess.exit).not.toHaveBeenCalled()
+    })
+
+    it('should error when --clip-offset is used without --fcp', async () => {
+      const tcxFile = join(__dirname, '../../fixtures/tcx/concept2.tcx')
+      mockProcess.argv.push('--clip-offset', 'clip-name,2.0', tcxFile)
+
+      await main(mockProcess)
+
+      expect(stderr).toContain('--clip-offset can only be used with --fcp')
+      expect(mockProcess.exit).toHaveBeenCalledWith(1)
     })
   })
 })

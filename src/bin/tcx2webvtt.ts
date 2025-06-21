@@ -29,11 +29,14 @@ Options:
   -v, --version             Display version information
       --fcp <project>       Final Cut Pro project export for filtering
       --hls <directory>     Generate HLS-compatible segmented output
+      --clip-offset <id,seconds>  Offset specific clip from real-world time
 
 Examples:
   tcx2webvtt workout.tcx > workout.vtt
   tcx2webvtt workout1.tcx workout2.tcx > combined.vtt
   tcx2webvtt --fcp project.fcpxmld workout.tcx > filtered.vtt
+  tcx2webvtt --fcp project.fcpxmld --clip-offset GX010163,2.5 workout.tcx
+  tcx2webvtt --fcp project.fcpxmld --clip-offset *,-1.0 workout.tcx
   tcx2webvtt --hls ./hls-output workout.tcx
   `)
 }
@@ -59,6 +62,7 @@ export async function main(proc: ProcessLike) {
         version: { type: 'boolean', short: 'v' },
         fcp: { type: 'string' },
         hls: { type: 'string' },
+        'clip-offset': { type: 'string' },
       },
       allowPositionals: true,
     })
@@ -96,6 +100,33 @@ export async function main(proc: ProcessLike) {
       proc.exit(1)
     }
 
+    // Validate clip-offset argument
+    if (values['clip-offset']) {
+      if (!values.fcp) {
+        proc.stderr.write('Error: --clip-offset can only be used with --fcp\n')
+        proc.exit(1)
+      }
+
+      const clipOffsetParts = values['clip-offset'].split(',')
+      if (
+        clipOffsetParts.length !== 2 ||
+        !clipOffsetParts[0].trim() ||
+        !clipOffsetParts[1].trim()
+      ) {
+        proc.stderr.write(
+          'Error: Invalid clip-offset format. Expected: <clip-id>,<seconds>\n'
+        )
+        proc.exit(1)
+      }
+
+      const [, offsetStr] = clipOffsetParts.map((s) => s.trim())
+      const offsetSeconds = parseFloat(offsetStr)
+      if (isNaN(offsetSeconds)) {
+        proc.stderr.write('Error: Invalid clip-offset format. Offset must be a number\n')
+        proc.exit(1)
+      }
+    }
+
     const inputFiles = positionals
 
     // Check if all input files exist
@@ -125,7 +156,19 @@ export async function main(proc: ProcessLike) {
       const fcpReader = new FCPReader(values.fcp)
       const clips = await fcpReader.getClips()
 
-      const timelineMapper = new TimelineMapper({ sampleIndex, clips })
+      // Parse clip offsets if provided
+      let clipOffsets: Map<string, number> | undefined
+      if (values['clip-offset']) {
+        const [clipId, offsetStr] = values['clip-offset'].split(',').map((s) => s.trim())
+        const offsetMs = parseFloat(offsetStr) * 1000 // Convert seconds to milliseconds
+        clipOffsets = new Map([[clipId, offsetMs]])
+      }
+
+      const timelineMapper = new TimelineMapper({
+        sampleIndex,
+        clips,
+        options: clipOffsets ? { clipOffsets } : undefined,
+      })
       cues = timelineMapper.getCues()
     } else {
       // Generate sequential cues from samples
