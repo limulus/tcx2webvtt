@@ -37,7 +37,7 @@ Examples:
   tcx2webvtt workout1.tcx workout2.tcx > combined.vtt
   tcx2webvtt --fcp project.fcpxmld workout.tcx > filtered.vtt
   tcx2webvtt --fcp project.fcpxmld --clip-offset GX010163,2.5 workout.tcx
-  tcx2webvtt --fcp project.fcpxmld --clip-offset *,-1.0 workout.tcx
+  tcx2webvtt --fcp project.fcpxmld --clip-offset '*,-1.0' workout.tcx
   tcx2webvtt --fcp project.fcpxmld --clip-offset GX010163,2.5 --clip-offset GX020163,-1.0 workout.tcx
   tcx2webvtt --hls ./hls-output workout.tcx
   `)
