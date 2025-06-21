@@ -1,4 +1,4 @@
-import { Clip } from './lib/clip.js'
+import { Clip, type ClipOptions } from './lib/clip.js'
 import { Cue, type CueOptions } from './lib/cue.js'
 import { FCPReader } from './lib/fcp-reader.js'
 import { HLSSegmenter, type HLSSegment } from './lib/hls-segmenter.js'
@@ -31,6 +31,7 @@ export {
 }
 
 export type {
+  ClipOptions,
   Coordinates,
   CueOptions,
   HLSSegment,

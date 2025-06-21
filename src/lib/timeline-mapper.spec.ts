@@ -15,20 +15,44 @@ describe('TimelineMapper', () => {
 
   describe('constructor', () => {
     it('should accept a SampleIndex and array of Clips', () => {
-      const clips = [new Clip('0', new Date(), new Date(), 1000, 0)]
+      const clips = [
+        new Clip({
+          id: '0',
+          captureStart: new Date(),
+          captureEnd: new Date(),
+          duration: 1000,
+          offset: 0,
+        }),
+      ]
       const mapper = new TimelineMapper({ sampleIndex, clips })
       expect(mapper).toBeInstanceOf(TimelineMapper)
     })
 
     it('should accept a SampleIndex, array of Clips, and options', () => {
-      const clips = [new Clip('0', new Date(), new Date(), 1000, 0)]
+      const clips = [
+        new Clip({
+          id: '0',
+          captureStart: new Date(),
+          captureEnd: new Date(),
+          duration: 1000,
+          offset: 0,
+        }),
+      ]
       const options = { defaultCueDurationMs: 1000 }
       const mapper = new TimelineMapper({ sampleIndex, clips, options })
       expect(mapper).toBeInstanceOf(TimelineMapper)
     })
 
     it('should use default cue duration of 1000ms when no options provided', () => {
-      const clips = [new Clip('0', new Date(), new Date(), 1000, 0)]
+      const clips = [
+        new Clip({
+          id: '0',
+          captureStart: new Date(),
+          captureEnd: new Date(),
+          duration: 1000,
+          offset: 0,
+        }),
+      ]
       const mapper = new TimelineMapper({ sampleIndex, clips })
       expect(mapper).toBeInstanceOf(TimelineMapper)
       // Default behavior will be tested implicitly by other tests expecting 1s cues
@@ -45,7 +69,9 @@ describe('TimelineMapper', () => {
     it('should return empty array when SampleIndex has no samples', () => {
       const captureStart = new Date('2025-01-01T10:00:00Z')
       const captureEnd = new Date('2025-01-01T10:00:15Z')
-      const clips = [new Clip('0', captureStart, captureEnd, 15000, 0)]
+      const clips = [
+        new Clip({ id: '0', captureStart, captureEnd, duration: 15000, offset: 0 }),
+      ]
 
       const mapper = new TimelineMapper({ sampleIndex, clips })
       const cues = mapper.getCues()
@@ -64,7 +90,9 @@ describe('TimelineMapper', () => {
       ]
       sampleIndex.addSamples(samples)
 
-      const clips = [new Clip('0', captureStart, captureEnd, 3000, 0)] // 3s clip at offset 0
+      const clips = [
+        new Clip({ id: '0', captureStart, captureEnd, duration: 3000, offset: 0 }),
+      ] // 3s clip at offset 0
       const mapper = new TimelineMapper({ sampleIndex, clips })
 
       const cues = mapper.getCues()
@@ -102,20 +130,20 @@ describe('TimelineMapper', () => {
       sampleIndex.addSamples(samples)
 
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:06Z'), // 6s clip
-          6000,
-          0
-        ),
-        new Clip(
-          '1',
-          new Date('2025-01-01T10:05:00Z'),
-          new Date('2025-01-01T10:05:03Z'), // 3s clip
-          3000,
-          10000 // starts at 10s on video timeline
-        ),
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:06Z'), // 6s clip
+          duration: 6000,
+          offset: 0,
+        }),
+        new Clip({
+          id: '1',
+          captureStart: new Date('2025-01-01T10:05:00Z'),
+          captureEnd: new Date('2025-01-01T10:05:03Z'), // 3s clip
+          duration: 3000,
+          offset: 10000, // starts at 10s on video timeline
+        }),
       ]
 
       const mapper = new TimelineMapper({ sampleIndex, clips })
@@ -147,7 +175,9 @@ describe('TimelineMapper', () => {
       ]
       sampleIndex.addSamples(samples)
 
-      const clips = [new Clip('0', captureStart, captureEnd, 3000, 0)]
+      const clips = [
+        new Clip({ id: '0', captureStart, captureEnd, duration: 3000, offset: 0 }),
+      ]
       const mapper = new TimelineMapper({ sampleIndex, clips })
       const cues = mapper.getCues()
 
@@ -173,20 +203,20 @@ describe('TimelineMapper', () => {
 
       // Clips provided in reverse chronological order
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:05:00Z'),
-          new Date('2025-01-01T10:05:06Z'), // 6s clip
-          6000,
-          20000
-        ), // Later clip
-        new Clip(
-          '1',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:06Z'), // 6s clip
-          6000,
-          0
-        ), // Earlier clip
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:05:00Z'),
+          captureEnd: new Date('2025-01-01T10:05:06Z'), // 6s clip
+          duration: 6000,
+          offset: 20000,
+        }), // Later clip
+        new Clip({
+          id: '1',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:06Z'), // 6s clip
+          duration: 6000,
+          offset: 0,
+        }), // Earlier clip
       ]
 
       const mapper = new TimelineMapper({ sampleIndex, clips })
@@ -212,7 +242,9 @@ describe('TimelineMapper', () => {
       ]
       sampleIndex.addSamples(samples)
 
-      const clips = [new Clip('0', captureStart, captureEnd, 10000, 0)]
+      const clips = [
+        new Clip({ id: '0', captureStart, captureEnd, duration: 10000, offset: 0 }),
+      ]
       const mapper = new TimelineMapper({ sampleIndex, clips })
       const cues = mapper.getCues()
 
@@ -247,7 +279,9 @@ describe('TimelineMapper', () => {
       ]
       sampleIndex.addSamples(samples)
 
-      const clips = [new Clip('0', captureStart, captureEnd, 15000, 0)]
+      const clips = [
+        new Clip({ id: '0', captureStart, captureEnd, duration: 15000, offset: 0 }),
+      ]
       const mapper = new TimelineMapper({ sampleIndex, clips })
       const cues = mapper.getCues()
 
@@ -277,7 +311,9 @@ describe('TimelineMapper', () => {
       ]
       sampleIndex.addSamples(samples)
 
-      const clips = [new Clip('0', captureStart, captureEnd, 4000, 0)]
+      const clips = [
+        new Clip({ id: '0', captureStart, captureEnd, duration: 4000, offset: 0 }),
+      ]
       const options = { defaultCueDurationMs: 2000 } // 2-second cues
       const mapper = new TimelineMapper({ sampleIndex, clips, options })
       const cues = mapper.getCues()
@@ -309,7 +345,9 @@ describe('TimelineMapper', () => {
       ]
       sampleIndex.addSamples(samples)
 
-      const clips = [new Clip('0', captureStart, captureEnd, 2500, 1000)] // offset at 1s
+      const clips = [
+        new Clip({ id: '0', captureStart, captureEnd, duration: 2500, offset: 1000 }),
+      ] // offset at 1s
       const mapper = new TimelineMapper({ sampleIndex, clips })
       const cues = mapper.getCues()
 
@@ -342,20 +380,20 @@ describe('TimelineMapper', () => {
       sampleIndex.addSamples(samples)
 
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:12Z'),
-          12000,
-          0
-        ), // 0-12s
-        new Clip(
-          '1',
-          new Date('2025-01-01T10:00:08Z'),
-          new Date('2025-01-01T10:00:16Z'), // 8s duration
-          8000,
-          15000 // starts at 15s on video timeline
-        ),
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:12Z'),
+          duration: 12000,
+          offset: 0,
+        }), // 0-12s
+        new Clip({
+          id: '1',
+          captureStart: new Date('2025-01-01T10:00:08Z'),
+          captureEnd: new Date('2025-01-01T10:00:16Z'), // 8s duration
+          duration: 8000,
+          offset: 15000, // starts at 15s on video timeline
+        }),
       ]
 
       const mapper = new TimelineMapper({ sampleIndex, clips })
@@ -386,20 +424,20 @@ describe('TimelineMapper', () => {
       sampleIndex.addSamples(samples)
 
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:06Z'),
-          6000,
-          0
-        ),
-        new Clip(
-          '1',
-          new Date('2025-01-01T10:05:00Z'),
-          new Date('2025-01-01T10:05:06Z'),
-          6000,
-          10000
-        ),
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:06Z'),
+          duration: 6000,
+          offset: 0,
+        }),
+        new Clip({
+          id: '1',
+          captureStart: new Date('2025-01-01T10:05:00Z'),
+          captureEnd: new Date('2025-01-01T10:05:06Z'),
+          duration: 6000,
+          offset: 10000,
+        }),
       ]
 
       // Apply 2-second offset to clip '1' only
@@ -428,20 +466,20 @@ describe('TimelineMapper', () => {
       sampleIndex.addSamples(samples)
 
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:06Z'),
-          6000,
-          0
-        ),
-        new Clip(
-          '1',
-          new Date('2025-01-01T10:05:00Z'),
-          new Date('2025-01-01T10:05:06Z'),
-          6000,
-          10000
-        ),
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:06Z'),
+          duration: 6000,
+          offset: 0,
+        }),
+        new Clip({
+          id: '1',
+          captureStart: new Date('2025-01-01T10:05:00Z'),
+          captureEnd: new Date('2025-01-01T10:05:06Z'),
+          duration: 6000,
+          offset: 10000,
+        }),
       ]
 
       // Apply 1.5-second offset to all clips
@@ -468,13 +506,13 @@ describe('TimelineMapper', () => {
       sampleIndex.addSamples(samples)
 
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:06Z'),
-          6000,
-          0
-        ),
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:06Z'),
+          duration: 6000,
+          offset: 0,
+        }),
       ]
 
       // Apply offset to non-existent clip ID '5'
@@ -497,13 +535,13 @@ describe('TimelineMapper', () => {
       sampleIndex.addSamples(samples)
 
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:06Z'),
-          6000,
-          0
-        ),
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:06Z'),
+          duration: 6000,
+          offset: 0,
+        }),
       ]
 
       // No clip offsets provided
@@ -522,13 +560,13 @@ describe('TimelineMapper', () => {
       sampleIndex.addSamples(samples)
 
       const clips = [
-        new Clip(
-          '0',
-          new Date('2025-01-01T10:00:00Z'),
-          new Date('2025-01-01T10:00:06Z'),
-          6000,
-          0
-        ),
+        new Clip({
+          id: '0',
+          captureStart: new Date('2025-01-01T10:00:00Z'),
+          captureEnd: new Date('2025-01-01T10:00:06Z'),
+          duration: 6000,
+          offset: 0,
+        }),
       ]
 
       // Apply -2s offset (at video time 1s, we look at capture time 10:00:01 - 2s = 9:59:59, no sample)

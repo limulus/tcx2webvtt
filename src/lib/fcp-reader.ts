@@ -103,7 +103,13 @@ export class FCPReader {
     const captureStart = new Date(baseTime.getTime() + elapsedSeconds * 1000)
     const captureEnd = new Date(captureStart.getTime() + durationMs)
 
-    return new Clip(clipName, captureStart, captureEnd, durationMs, offsetMs)
+    return new Clip({
+      id: clipName,
+      captureStart,
+      captureEnd,
+      duration: durationMs,
+      offset: offsetMs,
+    })
   }
 
   private parseRegularClip(clip: any, assets: Map<string, any>): Clip | null {
@@ -137,7 +143,13 @@ export class FCPReader {
     const captureStart = new Date(baseTime.getTime() + elapsedSeconds * 1000)
     const captureEnd = new Date(captureStart.getTime() + durationMs)
 
-    return new Clip(clipName, captureStart, captureEnd, durationMs, offsetMs)
+    return new Clip({
+      id: clipName,
+      captureStart,
+      captureEnd,
+      duration: durationMs,
+      offset: offsetMs,
+    })
   }
 
   private parseTimeString(timeStr: string): number {
