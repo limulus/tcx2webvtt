@@ -11,12 +11,12 @@ Pro XML export) to omit parts of the output and ensure synchronization with an e
 - [x] Class to generate WebVTT file from array of `Sample`s
 - [x] Create a CLI Node.js executable that takes the XML file as an argument and outputs
       WebVTT.
-- [] Parse timecode data from a Final Cut Pro XML export
-- [] Create a class that uses the timecode info from the FCP XML and creates a list of
-  datetime intervals that the video project includes
-- [] Create a function or class that uses the time interval series to filter array of
-  `Sample`s
-- [] Add options to CLI to take Final Cut Pro XML export file and an initial datetime to
-  sync timecode
+- [x] Parse timecode data from a Final Cut Pro XML export
+- [x] Create a class that uses the timecode info from the FCP XML and creates a list of
+      datetime intervals that the video project includes
+- [x] Create a function or class that uses the time interval series to filter array of
+      `Sample`s
+- [x] Add options to CLI to take Final Cut Pro XML export file and an initial datetime to
+      sync timecode
 - [] Create a JSON schema that WebVTT metadata will conform to, for consumers of WebVTT
   tracks to validate against and get TS types
