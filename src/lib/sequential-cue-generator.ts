@@ -25,7 +25,7 @@ export class SequentialCueGenerator {
     return samples.map((sample, index) => {
       const startTime = index * duration
       const endTime = startTime + duration
-      return new Cue(startTime, endTime, [sample])
+      return new Cue({ startTime, endTime, samples: [sample] })
     })
   }
 }

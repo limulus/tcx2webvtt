@@ -1,5 +1,5 @@
 import { Clip } from './lib/clip.js'
-import { Cue } from './lib/cue.js'
+import { Cue, type CueOptions } from './lib/cue.js'
 import { FCPReader } from './lib/fcp-reader.js'
 import { HLSSegmenter, type HLSSegment } from './lib/hls-segmenter.js'
 import { SampleIndex } from './lib/sample-index.js'
@@ -32,6 +32,7 @@ export {
 
 export type {
   Coordinates,
+  CueOptions,
   HLSSegment,
   TimelineMapperOptions,
   TimelineMapperConstructorArgs,

@@ -17,7 +17,7 @@ describe('WebVTTGenerator', () => {
     const samples = [
       new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
     ]
-    const cues = [new Cue(0, 1000, samples)]
+    const cues = [new Cue({ startTime: 0, endTime: 1000, samples })]
 
     const result = generator.generate(cues)
 
@@ -31,7 +31,7 @@ describe('WebVTTGenerator', () => {
   it('should generate WebVTT with a single cue containing one power sample', () => {
     const generator = new WebVTTGenerator()
     const samples = [new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.Power, 250)]
-    const cues = [new Cue(0, 1000, samples)]
+    const cues = [new Cue({ startTime: 0, endTime: 1000, samples })]
 
     const result = generator.generate(cues)
 
@@ -45,7 +45,7 @@ describe('WebVTTGenerator', () => {
   it('should generate WebVTT with a single cue containing one cadence sample', () => {
     const generator = new WebVTTGenerator()
     const samples = [new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.Cadence, 85)]
-    const cues = [new Cue(0, 1000, samples)]
+    const cues = [new Cue({ startTime: 0, endTime: 1000, samples })]
 
     const result = generator.generate(cues)
 
@@ -61,7 +61,7 @@ describe('WebVTTGenerator', () => {
     const samples = [
       new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.Distance, 1500),
     ]
-    const cues = [new Cue(0, 1000, samples)]
+    const cues = [new Cue({ startTime: 0, endTime: 1000, samples })]
 
     const result = generator.generate(cues)
 
@@ -80,7 +80,7 @@ describe('WebVTTGenerator', () => {
         longitude: -122.4194,
       }),
     ]
-    const cues = [new Cue(0, 1000, samples)]
+    const cues = [new Cue({ startTime: 0, endTime: 1000, samples })]
 
     const result = generator.generate(cues)
 
@@ -100,7 +100,7 @@ describe('WebVTTGenerator', () => {
         altitude: 15.5,
       }),
     ]
-    const cues = [new Cue(0, 1000, samples)]
+    const cues = [new Cue({ startTime: 0, endTime: 1000, samples })]
 
     const result = generator.generate(cues)
 
@@ -118,7 +118,7 @@ describe('WebVTTGenerator', () => {
       new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.Power, 250),
       new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.Cadence, 85),
     ]
-    const cues = [new Cue(0, 1000, samples)]
+    const cues = [new Cue({ startTime: 0, endTime: 1000, samples })]
 
     const result = generator.generate(cues)
 
@@ -132,15 +132,23 @@ describe('WebVTTGenerator', () => {
   it('should generate WebVTT with multiple cues each containing single samples', () => {
     const generator = new WebVTTGenerator()
     const cues = [
-      new Cue(0, 1000, [
-        new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
-      ]),
-      new Cue(1000, 2000, [
-        new Sample(new Date('2023-01-01T12:00:01Z'), SampleMetric.Power, 250),
-      ]),
-      new Cue(2000, 3000, [
-        new Sample(new Date('2023-01-01T12:00:02Z'), SampleMetric.Cadence, 85),
-      ]),
+      new Cue({
+        startTime: 0,
+        endTime: 1000,
+        samples: [
+          new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
+        ],
+      }),
+      new Cue({
+        startTime: 1000,
+        endTime: 2000,
+        samples: [new Sample(new Date('2023-01-01T12:00:01Z'), SampleMetric.Power, 250)],
+      }),
+      new Cue({
+        startTime: 2000,
+        endTime: 3000,
+        samples: [new Sample(new Date('2023-01-01T12:00:02Z'), SampleMetric.Cadence, 85)],
+      }),
     ]
 
     const result = generator.generate(cues)
@@ -161,14 +169,22 @@ describe('WebVTTGenerator', () => {
   it('should generate WebVTT with multiple cues containing multiple samples', () => {
     const generator = new WebVTTGenerator()
     const cues = [
-      new Cue(0, 1000, [
-        new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
-        new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.Power, 250),
-      ]),
-      new Cue(1000, 2000, [
-        new Sample(new Date('2023-01-01T12:00:01Z'), SampleMetric.Cadence, 85),
-        new Sample(new Date('2023-01-01T12:00:01Z'), SampleMetric.Distance, 1500),
-      ]),
+      new Cue({
+        startTime: 0,
+        endTime: 1000,
+        samples: [
+          new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
+          new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.Power, 250),
+        ],
+      }),
+      new Cue({
+        startTime: 1000,
+        endTime: 2000,
+        samples: [
+          new Sample(new Date('2023-01-01T12:00:01Z'), SampleMetric.Cadence, 85),
+          new Sample(new Date('2023-01-01T12:00:01Z'), SampleMetric.Distance, 1500),
+        ],
+      }),
     ]
 
     const result = generator.generate(cues)
@@ -188,7 +204,7 @@ describe('WebVTTGenerator', () => {
     const samples = [
       new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
     ]
-    const cues = [new Cue(5000, 7500, samples)]
+    const cues = [new Cue({ startTime: 5000, endTime: 7500, samples })]
 
     const result = generator.generate(cues)
 
@@ -204,7 +220,7 @@ describe('WebVTTGenerator', () => {
     const samples = [
       new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
     ]
-    const cues = [new Cue(1234, 5678, samples)]
+    const cues = [new Cue({ startTime: 1234, endTime: 5678, samples })]
 
     const result = generator.generate(cues)
 
@@ -220,7 +236,7 @@ describe('WebVTTGenerator', () => {
     const samples = [
       new Sample(new Date('2023-01-01T12:00:00Z'), SampleMetric.HeartRate, 120),
     ]
-    const cues = [new Cue(3661000, 3662000, samples)] // 1:01:01.000 - 1:01:02.000
+    const cues = [new Cue({ startTime: 3661000, endTime: 3662000, samples })] // 1:01:01.000 - 1:01:02.000
 
     const result = generator.generate(cues)
 

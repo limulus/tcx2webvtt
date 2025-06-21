@@ -28,7 +28,7 @@ describe('HLSSegmenter', () => {
   }
 
   const createCue = (startTime: number, endTime: number, samples: Sample[]): Cue => {
-    return new Cue(startTime, endTime, samples)
+    return new Cue({ startTime, endTime, samples })
   }
 
   describe('generateHLS', () => {

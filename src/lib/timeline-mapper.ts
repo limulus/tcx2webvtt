@@ -63,7 +63,11 @@ export class TimelineMapper {
 
         // Only create a cue if there are samples in this interval
         if (samplesInInterval.length > 0) {
-          const cue = new Cue(currentVideoTime, cueEndTime, samplesInInterval)
+          const cue = new Cue({
+            startTime: currentVideoTime,
+            endTime: cueEndTime,
+            samples: samplesInInterval,
+          })
           cues.push(cue)
         }
 
