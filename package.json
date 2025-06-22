@@ -21,6 +21,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "tsc --incremental false --declaration --declarationMap --outDir dist",
+    "postbuild": "chmod +x dist/bin/tcx2webvtt.js",
     "clean": "del-cli *.tsbuildinfo coverage dist",
     "lint": "eslint *.ts src",
     "lint:fix": "npm run lint -- --fix",
