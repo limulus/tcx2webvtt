@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import esMain from 'es-main'
 import { existsSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
@@ -41,7 +42,7 @@ Examples:
   tcx2webvtt --fcp project.fcpxmld --clip-offset '*,-1.0' workout.tcx
   tcx2webvtt --fcp project.fcpxmld --clip-offset GX010163,2.5 --clip-offset GX020163,-1.0 workout.tcx
   tcx2webvtt --hls ./hls-output workout.tcx
-  `)
+`)
 }
 
 export interface ProcessLike {
@@ -206,7 +207,7 @@ export async function main(proc: ProcessLike) {
 }
 
 /* c8 ignore start */
-if (fileURLToPath(import.meta.url) === process.argv[1]) {
+if (esMain(import.meta)) {
   await main(process)
 }
 /* c8 ignore stop */
