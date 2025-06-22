@@ -28,6 +28,11 @@ jobs:
   publish:
     needs: verify
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
     name: publish package if needed
     steps:
       - uses: actions/checkout@v4
