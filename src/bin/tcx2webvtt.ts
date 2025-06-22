@@ -81,7 +81,7 @@ export async function main(proc: ProcessLike) {
     if (values.version) {
       const packagePath = join(__dirname, '../..', 'package.json')
       const packageData = JSON.parse(await readFile(packagePath, 'utf-8'))
-      proc.stdout.write(packageData.version)
+      proc.stdout.write(packageData.version + '\n')
       proc.exit(0)
     }
 
