@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2025-06-20
-decision-makers: @limulus
+decision-makers: "@limulus"
 ---
 
 # Add HLS Output Support with --hls Option

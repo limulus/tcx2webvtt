@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2025-06-02
-decision-makers: @limulus
+decision-makers: "@limulus"
 ---
 
 # Sample Index Data Structure for Timeline Synchronization
