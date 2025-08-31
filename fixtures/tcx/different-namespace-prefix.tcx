@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrainingCenterDatabase
+  xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
+  xmlns:limulus="https://limulus.net/xsd/tcx/v1"
+>
+<Activities>
+  <Activity Sport="Biking">
+    <Id>2025-03-02T18:38:01Z</Id>
+    <Lap StartTime="2025-03-02T18:38:01Z">
+      <TotalTimeSeconds>10</TotalTimeSeconds>
+      <DistanceMeters>100</DistanceMeters>
+      <Calories>10</Calories>
+      <Intensity>Active</Intensity>
+      <TriggerMethod>Manual</TriggerMethod>
+      <Track>
+      <Trackpoint>
+        <Time>2025-03-02T19:00:33.999</Time>
+        <Position>
+          <LatitudeDegrees>32.36415566566089</LatitudeDegrees>
+          <LongitudeDegrees>-111.01644143335649</LongitudeDegrees>
+        </Position>
+        <AltitudeMeters>714.6836803928018</AltitudeMeters>
+        <Extensions>
+          <limulus:SpeedMetersSec>8.12345</limulus:SpeedMetersSec>
+          <limulus:CourseDegrees>213.60538018719149</limulus:CourseDegrees>
+        </Extensions>
+      </Trackpoint>
+      </Track>
+    </Lap>
+  </Activity>
+</Activities>
+</TrainingCenterDatabase>

@@ -1,3 +1,4 @@
+import { assertObject } from '@sindresorhus/is'
 import { XMLParser } from 'fast-xml-parser'
 
 import { Sample, SampleMetric, Coordinates } from './sample.js'
@@ -5,6 +6,7 @@ import { Sample, SampleMetric, Coordinates } from './sample.js'
 export class TCXReader {
   private readonly parser: XMLParser
   private readonly xmlData: any
+  private readonly ldnNamespaceURI = 'https://limulus.net/xsd/tcx/v1'
 
   constructor(tcxContent: string) {
     this.parser = new XMLParser({
@@ -12,6 +14,40 @@ export class TCXReader {
       isArray: (name) => name === 'Trackpoint' || name === 'Activity' || name === 'Lap',
     })
     this.xmlData = this.parser.parse(tcxContent)
+  }
+
+  private findNamespacePrefix(namespaceURI: string): string | null {
+    const rootElement = this.xmlData?.TrainingCenterDatabase
+
+    assertObject(
+      rootElement,
+      'TrainingCenterDatabase must be a valid object for namespace lookup'
+    )
+
+    // Look for namespace declarations
+    for (const [key, value] of Object.entries(rootElement)) {
+      if (key.startsWith('@_xmlns:') && value === namespaceURI) {
+        return key.substring('@_xmlns:'.length)
+      }
+    }
+    return null
+  }
+
+  private getSpeedFromExtensions(extensions: any): number | null {
+    if (!extensions) return null
+
+    const ldnPrefix = this.findNamespacePrefix(this.ldnNamespaceURI)
+    if (ldnPrefix === null) return null
+
+    const speedValue = extensions[`${ldnPrefix}:SpeedMetersSec`]
+
+    if (speedValue !== undefined && speedValue !== null && speedValue !== '') {
+      const speed = parseFloat(String(speedValue))
+      if (!isNaN(speed)) {
+        return speed
+      }
+    }
+    return null
   }
 
   public getSamples(): Sample<SampleMetric>[] {
@@ -107,6 +143,12 @@ export class TCXReader {
                 )
               }
             }
+          }
+
+          // Parse speed from ldn namespace extensions if available
+          const speed = this.getSpeedFromExtensions(tp.Extensions)
+          if (speed !== null) {
+            allSamples.push(new Sample<SampleMetric.Speed>(time, SampleMetric.Speed, speed))
           }
         }
       }

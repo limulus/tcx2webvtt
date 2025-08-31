@@ -167,6 +167,56 @@ describe('TCXReader', () => {
           firstLocationSample.value.longitude
         )
       }
+
+      // Check for speed samples
+      const speedSamples = samples.filter((s) => s.metric === SampleMetric.Speed)
+      expect(speedSamples.length).toBeGreaterThan(0)
+
+      // Check first speed sample value matches the first trackpoint with speed data
+      const firstSpeedSample = speedSamples[0] as Sample<SampleMetric.Speed>
+      expect(firstSpeedSample.value).toBeCloseTo(6.57443257931449)
+    })
+
+    it('should handle TCX content with different namespace prefix', async () => {
+      const tcxContent = await fs.readFile(
+        join(fixturesDir, 'different-namespace-prefix.tcx'),
+        'utf8'
+      )
+      const reader = new TCXReader(tcxContent)
+      const samples = reader.getSamples()
+
+      expect(samples).toBeInstanceOf(Array)
+      expect(samples.length).toBeGreaterThan(0)
+
+      // Check for speed samples with different namespace prefix
+      const speedSamples = samples.filter((s) => s.metric === SampleMetric.Speed)
+      expect(speedSamples.length).toBe(1)
+
+      // Check speed value from different namespace prefix
+      const speedSample = speedSamples[0] as Sample<SampleMetric.Speed>
+      expect(speedSample.value).toBeCloseTo(8.12345)
+
+      // Also verify location sample exists
+      const locationSamples = samples.filter((s) => s.metric === SampleMetric.Location)
+      expect(locationSamples.length).toBe(1)
+    })
+
+    it('should handle TCX content without ldn namespace', async () => {
+      const tcxContent = await fs.readFile(join(fixturesDir, 'concept2.tcx'), 'utf8')
+      const reader = new TCXReader(tcxContent)
+
+      // This tests the case where the ldn namespace is not found
+      // The speed parsing should return null and no speed samples should be created
+      const samples = reader.getSamples()
+      const speedSamples = samples.filter((s) => s.metric === SampleMetric.Speed)
+
+      // concept2.tcx doesn't have ldn namespace, so no speed samples
+      expect(speedSamples.length).toBe(0)
+
+      // But it should have other samples
+      expect(samples.length).toBeGreaterThan(0)
+      const heartRateSamples = samples.filter((s) => s.metric === SampleMetric.HeartRate)
+      expect(heartRateSamples.length).toBeGreaterThan(0)
     })
   })
 })

@@ -3,6 +3,7 @@ export enum SampleMetric {
   Distance = 'distance',
   Cadence = 'cadence',
   Power = 'power',
+  Speed = 'speed',
   Location = 'location',
 }
 
